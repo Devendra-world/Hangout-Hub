@@ -4,20 +4,22 @@
  */
 
 import React, { useState } from 'react';
-import { Menu, X, PlusCircle, Compass, Film, Tag, Calculator, MessageSquareText, Coffee } from 'lucide-react';
+import { Menu, X, PlusCircle, Compass, Film, Tag, Calculator, MessageSquareText, Coffee, Database } from 'lucide-react';
 
 interface NavbarProps {
   activeTab: string;
   onSelectTab: (tab: string) => void;
   onOpenSubmitSpot: () => void;
   onOpenPartnerModal: () => void;
+  onOpenPhpModal?: () => void;
 }
 
 export const Navbar: React.FC<NavbarProps> = ({
   activeTab,
   onSelectTab,
   onOpenSubmitSpot,
-  onOpenPartnerModal
+  onOpenPartnerModal,
+  onOpenPhpModal
 }) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
@@ -107,8 +109,20 @@ export const Navbar: React.FC<NavbarProps> = ({
           </button>
         </nav>
 
-        {/* Zone 3: 1 primary action */}
-        <div className="hidden md:flex items-center gap-3 shrink-0">
+        {/* Zone 3: Actions */}
+        <div className="hidden md:flex items-center gap-2.5 shrink-0">
+          {onOpenPhpModal && (
+            <button
+              onClick={onOpenPhpModal}
+              className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-bold text-[#2A1810] bg-[#EFE7DA] hover:bg-[#E5DBCB] rounded-xl border border-[#D9CDB8] transition-all cursor-pointer whitespace-nowrap shadow-2xs"
+              title="View PHP & SQL Database architecture and export SQL"
+            >
+              <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+              <Database className="w-3.5 h-3.5 text-[#7C3AED]" />
+              <span>PHP + SQL DB</span>
+            </button>
+          )}
+
           <button
             onClick={onOpenSubmitSpot}
             className="flex items-center gap-2 px-4 py-2 text-xs font-bold text-white bg-[#2A1810] hover:bg-[#C85A32] rounded-xl transition-all shadow-sm cursor-pointer whitespace-nowrap shrink-0"
@@ -178,12 +192,25 @@ export const Navbar: React.FC<NavbarProps> = ({
             >
               + Submit an Ahmedabad Spot
             </button>
+            {onOpenPhpModal && (
+              <button
+                onClick={() => {
+                  setMobileMenuOpen(false);
+                  onOpenPhpModal();
+                }}
+                className="w-full text-center px-4 py-2 text-xs font-bold text-[#2A1810] bg-[#EFE7DA] rounded-xl hover:bg-[#E5DBCB] flex items-center justify-center gap-2"
+              >
+                <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                <Database className="w-3.5 h-3.5 text-[#7C3AED]" />
+                <span>PHP 8.2 & SQL Database Center</span>
+              </button>
+            )}
             <button
               onClick={() => {
                 setMobileMenuOpen(false);
                 onOpenPartnerModal();
               }}
-              className="w-full text-center px-4 py-2 text-xs font-semibold text-[#5C4A3A] bg-[#EFE7DA] rounded-xl hover:bg-[#E5DBCB]"
+              className="w-full text-center px-4 py-2 text-xs font-semibold text-[#5C4A3A] bg-[#FAF7F2] border border-[#E8DFC8] rounded-xl hover:bg-[#E5DBCB]"
             >
               Cafe Owner Promotion Portal
             </button>

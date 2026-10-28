@@ -16,6 +16,7 @@ import { GroupBillSplitter } from './components/GroupBillSplitter.tsx';
 import { StudentFeedbackSection } from './components/StudentFeedbackSection.tsx';
 import { SubmitSpotModal } from './components/SubmitSpotModal.tsx';
 import { CafePartnerModal } from './components/CafePartnerModal.tsx';
+import { PhpDatabaseModal } from './components/PhpDatabaseModal.tsx';
 import { Footer } from './components/Footer.tsx';
 
 export default function App() {
@@ -24,6 +25,7 @@ export default function App() {
   const [selectedSpot, setSelectedSpot] = useState<HangoutSpot | null>(null);
   const [isSubmitSpotOpen, setIsSubmitSpotOpen] = useState(false);
   const [isPartnerModalOpen, setIsPartnerModalOpen] = useState(false);
+  const [isPhpModalOpen, setIsPhpModalOpen] = useState(false);
 
   // Community survey responses & stats
   const [surveyResponses, setSurveyResponses] = useState<SurveyResponse[]>(AHMEDABAD_COMMUNITY_FEED);
@@ -103,6 +105,7 @@ export default function App() {
         }}
         onOpenSubmitSpot={() => setIsSubmitSpotOpen(true)}
         onOpenPartnerModal={() => setIsPartnerModalOpen(true)}
+        onOpenPhpModal={() => setIsPhpModalOpen(true)}
       />
 
       {/* Main Content Sections */}
@@ -183,6 +186,11 @@ export default function App() {
         onClose={() => setIsPartnerModalOpen(false)}
       />
 
+      <PhpDatabaseModal
+        isOpen={isPhpModalOpen}
+        onClose={() => setIsPhpModalOpen(false)}
+      />
+
       {/* Footer */}
       <Footer
         onSelectTab={(tab) => {
@@ -191,6 +199,7 @@ export default function App() {
         }}
         onOpenSubmitSpot={() => setIsSubmitSpotOpen(true)}
         onOpenPartnerModal={() => setIsPartnerModalOpen(true)}
+        onOpenPhpModal={() => setIsPhpModalOpen(true)}
       />
 
     </div>

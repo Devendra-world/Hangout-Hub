@@ -10,12 +10,14 @@ interface FooterProps {
   onSelectTab: (tab: string) => void;
   onOpenSubmitSpot: () => void;
   onOpenPartnerModal: () => void;
+  onOpenPhpModal?: () => void;
 }
 
 export const Footer: React.FC<FooterProps> = ({
   onSelectTab,
   onOpenSubmitSpot,
-  onOpenPartnerModal
+  onOpenPartnerModal,
+  onOpenPhpModal
 }) => {
   return (
     <footer className="bg-[#FAF7F2] border-t border-[#E8DFC8] mt-20">
@@ -92,6 +94,17 @@ export const Footer: React.FC<FooterProps> = ({
                   Community Wishlist & Spot Requests
                 </button>
               </li>
+              {onOpenPhpModal && (
+                <li className="pt-1">
+                  <button
+                    onClick={onOpenPhpModal}
+                    className="text-[#7C3AED] hover:text-[#5B21B6] font-bold transition-colors cursor-pointer flex items-center gap-1.5"
+                  >
+                    <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                    <span>PHP & MySQL Database Center</span>
+                  </button>
+                </li>
+              )}
             </ul>
           </div>
 

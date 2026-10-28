@@ -1,0 +1,70 @@
+[
+  {
+    "id": "feed-1",
+    "studentName": "Aarav Patel",
+    "collegeOrCampus": "CEPT University, Navrangpura",
+    "yearOfStudy": "3rd Year B.Arch",
+    "monthlyHangoutBudget": "₹2,500 - ₹4,000",
+    "primaryFrustration": "Hidden costs & taxes turning a \"budget\" place into ₹500/head",
+    "worstExperienceWithApps": "Zomato said ₹600 for two. We were 7 CEPT architecture students at an SBR cafe, ordered basic cold coffees and pizzas, and the bill came to ₹3,850 with service charge and taxes.",
+    "idealSpotPriorities": [
+      "Honest per-head cost",
+      "Big group table",
+      "Near CEPT & Navrangpura"
+    ],
+    "maxAcceptableCostPerHead": 200,
+    "averageGroupSize": 7,
+    "submittedAt": "2026-10-26"
+  },
+  {
+    "id": "feed-2",
+    "studentName": "Pooja Trivedi",
+    "collegeOrCampus": "HL College of Commerce",
+    "yearOfStudy": "2nd Year B.Com",
+    "monthlyHangoutBudget": "₹2,000 - ₹3,000",
+    "primaryFrustration": "Instagram reel exaggeration vs reality of cramped 2-person tables",
+    "worstExperienceWithApps": "Saw a viral reel about an \"aesthetic greenhouse cafe in Bodakdev\". Traveled from HL with 8 friends only to find they had 3 tiny round tables and staff refused to push tables together.",
+    "idealSpotPriorities": [
+      "True group seating capacity",
+      "Under ₹150 budget",
+      "Outside cake allowed"
+    ],
+    "maxAcceptableCostPerHead": 150,
+    "averageGroupSize": 8,
+    "submittedAt": "2026-10-27"
+  },
+  {
+    "id": "feed-3",
+    "studentName": "Kunal & Squad",
+    "collegeOrCampus": "IIM Ahmedabad (Vastrapur)",
+    "yearOfStudy": "1st Year PGP",
+    "monthlyHangoutBudget": "₹3,500 - ₹5,000",
+    "primaryFrustration": "Broken or unusable \"Free WiFi\" when trying to do group projects",
+    "worstExperienceWithApps": "Need spots with multi-pin plugs and real 50+ Mbps fiber for laptop team meetings. Caffix in Vastrapur was a lifesaver, need more spots audited like that!",
+    "idealSpotPriorities": [
+      "WiFi speed verification",
+      "Power sockets at tables",
+      "Split bill friendly"
+    ],
+    "maxAcceptableCostPerHead": 300,
+    "averageGroupSize": 5,
+    "submittedAt": "2026-10-28"
+  },
+  {
+    "id": "feed-4",
+    "studentName": "Rohan Sharma",
+    "collegeOrCampus": "PDPU Gandhinagar",
+    "yearOfStudy": "Final Year B.Tech",
+    "monthlyHangoutBudget": "₹2,000 - ₹3,500",
+    "primaryFrustration": "Spots only listed for central Ahmedabad, hard to find spots near Raysan/Gandhinagar",
+    "worstExperienceWithApps": "Glad to see Tea Post Raysan added! Added our favorite chai point near PDPU gate with big lawn seating.",
+    "idealSpotPriorities": [
+      "Big group table",
+      "Under ₹100 budget",
+      "Late night friendly"
+    ],
+    "maxAcceptableCostPerHead": 100,
+    "averageGroupSize": 12,
+    "submittedAt": "2026-10-28"
+  }
+]
