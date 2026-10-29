@@ -4,7 +4,7 @@
  */
 
 import React, { useState } from 'react';
-import { X, Lock, Mail, User, School, MapPin, IndianRupee, Sparkles, LogIn, UserPlus } from 'lucide-react';
+import { X, Lock, Mail, User, School, MapPin, IndianRupee, Sparkles, LogIn, UserPlus, QrCode } from 'lucide-react';
 import { UserProfile } from '../types/index.ts';
 
 interface AuthModalProps {
@@ -21,6 +21,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onLoginSu
   const [college, setCollege] = useState('CEPT & Gujarat University');
   const [city, setCity] = useState('Ahmedabad');
   const [budget, setBudget] = useState(180);
+  const [upiId, setUpiId] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -32,6 +33,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onLoginSu
     setLoading(true);
 
     try {
+      const cleanUpi = upiId.trim() || (email.includes('@') ? `${email.split('@')[0].replace(/[^a-zA-Z0-9]/g, '')}@oksbi` : 'patadiyadevendra5@oksbi');
       const payload = mode === 'login'
         ? { action: 'login', email: email.trim(), password: password.trim() }
         : {
@@ -42,7 +44,8 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onLoginSu
             college: college.trim(),
             city: city.trim(),
             preferredBudget: Number(budget) || 200,
-            favoriteVibes: ['Budget Bite & Chill', 'Study & Projects']
+            favoriteVibes: ['Budget Bite & Chill', 'Study & Projects'],
+            upiId: cleanUpi
           };
 
       const res = await fetch('/api/auth', {
@@ -220,6 +223,32 @@ export const AuthModal: React.FC<AuthModalProps> = ({ isOpen, onClose, onLoginSu
                 <span className="text-[10px] text-[#8C6D53] mt-0.5 block">
                   Hangout-Hub recommends cafes matching your exact budget preferences.
                 </span>
+              </div>
+
+              {/* Payment QR / UPI ID Field */}
+              <div className="bg-[#FAF7F2] p-3 rounded-2xl border border-[#E8DFC8] space-y-1.5">
+                <div className="flex items-center justify-between">
+                  <label className="text-xs font-bold text-[#2A1810] flex items-center gap-1.5">
+                    <QrCode className="w-3.5 h-3.5 text-[#C85A32]" />
+                    <span>Payment UPI ID (for Squad Bill Split QR)</span>
+                  </label>
+                  <span className="text-[10px] font-extrabold text-[#059669] bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">
+                    Auto-QR
+                  </span>
+                </div>
+                <div className="relative">
+                  <span className="absolute left-3 top-2 text-xs font-bold text-[#C85A32]">UPI</span>
+                  <input
+                    type="text"
+                    value={upiId}
+                    onChange={(e) => setUpiId(e.target.value)}
+                    placeholder="e.g. devendra@okaxis or yourname@oksbi"
+                    className="w-full pl-11 pr-3 py-2 text-xs bg-white border border-[#D9CDB8] rounded-xl focus:outline-none focus:ring-1 focus:ring-[#C85A32]"
+                  />
+                </div>
+                <p className="text-[10px] text-[#8C6D53] leading-relaxed">
+                  Generates your personal payment QR code in the Squad Split tool so friends can scan & pay you directly via Google Pay, PhonePe, Paytm, or BHIM. You can change this anytime later in your profile!
+                </p>
               </div>
             </>
           )}

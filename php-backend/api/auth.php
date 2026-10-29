@@ -31,6 +31,7 @@ function formatUser(array $row): array {
         'favoriteVibes'   => $vibes,
         'bio'             => $row['bio'] ?? '',
         'avatarColor'     => $row['avatar_color'] ?? '#C85A32',
+        'upiId'           => $row['upi_id'] ?? 'patadiyadevendra5@oksbi',
         'createdAt'       => $row['created_at'] ?? date('Y-m-d')
     ];
 }
@@ -98,6 +99,13 @@ if ($method === 'POST') {
             sendJsonResponse(['success' => false, 'error' => 'An account with this email already exists. Please log in.'], 409);
         }
 
+        $upiId = trim($input['upiId'] ?? '');
+        if (empty($upiId)) {
+            // Default based on username or email
+            $prefix = preg_replace('/[^a-zA-Z0-9]/', '', strtolower(explode('@', $email)[0]));
+            $upiId = $prefix . '@oksbi';
+        }
+
         $userId = 'usr_' . substr(md5(uniqid()), 0, 10);
         $hash = password_hash($password, PASSWORD_DEFAULT);
         $vibes = $input['favoriteVibes'] ?? ['Budget Bite & Chill', 'Study & Projects'];
@@ -106,10 +114,10 @@ if ($method === 'POST') {
 
         $insert = "INSERT INTO users (
             id, name, email, password_hash, role, college, city, preferred_budget,
-            favorite_vibes_json, bio, avatar_color
+            favorite_vibes_json, bio, avatar_color, upi_id
         ) VALUES (
             :id, :name, :email, :password_hash, :role, :college, :city, :preferred_budget,
-            :favorite_vibes_json, :bio, :avatar_color
+            :favorite_vibes_json, :bio, :avatar_color, :upi_id
         )";
 
         $stmtIns = $pdo->prepare($insert);
@@ -124,7 +132,8 @@ if ($method === 'POST') {
             ':preferred_budget' => $budget,
             ':favorite_vibes_json' => json_encode($vibes),
             ':bio' => trim($input['bio'] ?? 'Student scout exploring student-friendly cafes.'),
-            ':avatar_color' => $chosenColor
+            ':avatar_color' => $chosenColor,
+            ':upi_id' => $upiId
         ]);
 
         $stmtGet = $pdo->prepare("SELECT * FROM users WHERE id = :id");

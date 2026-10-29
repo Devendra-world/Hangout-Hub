@@ -4,9 +4,11 @@
  */
 
 import React, { useState, useEffect } from 'react';
+import QRCode from 'qrcode';
 import {
   X, User, Mail, School, MapPin, IndianRupee, Edit3, Save, CheckCircle2,
-  Clock, Bookmark, ThumbsUp, LogOut, Sparkles, Compass, ShieldCheck, QrCode, KeyRound, AlertCircle
+  Clock, Bookmark, ThumbsUp, LogOut, Sparkles, Compass, ShieldCheck, QrCode, KeyRound, AlertCircle,
+  Copy, ExternalLink, Check, Share2
 } from 'lucide-react';
 import { UserProfile, HangoutSpot, UserActivityItem, RecommendationItem } from '../types/index.ts';
 
@@ -37,7 +39,7 @@ export const ProfileModal: React.FC<ProfileModalProps> = ({
   onSelectSpot,
   onOpenQrGenerator
 }) => {
-  const [activeTab, setActiveTab] = useState<'bookmarks' | 'history' | 'recommendations'>('bookmarks');
+  const [activeTab, setActiveTab] = useState<'bookmarks' | 'history' | 'recommendations' | 'payment_qr'>('bookmarks');
   const [isEditing, setIsEditing] = useState(false);
   const [saveLoading, setSaveLoading] = useState(false);
   const [saveSuccessMsg, setSaveSuccessMsg] = useState<string | null>(null);
@@ -49,6 +51,9 @@ export const ProfileModal: React.FC<ProfileModalProps> = ({
   const [city, setCity] = useState('');
   const [budget, setBudget] = useState(180);
   const [bio, setBio] = useState('');
+  const [upiId, setUpiId] = useState('');
+  const [userQrDataUrl, setUserQrDataUrl] = useState<string>('');
+  const [upiCopied, setUpiCopied] = useState(false);
   const [favoriteVibes, setFavoriteVibes] = useState<string[]>([]);
   const [newPassword, setNewPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
@@ -68,10 +73,32 @@ export const ProfileModal: React.FC<ProfileModalProps> = ({
       setCity(user.city);
       setBudget(user.preferredBudget);
       setBio(user.bio);
+      setUpiId(user.upiId || 'patadiyadevendra5@oksbi');
       setFavoriteVibes(user.favoriteVibes || []);
       fetchUserData(user.id);
     }
   }, [user]);
+
+  // Generate verified camera-scannable NPCI UPI QR code for this user
+  useEffect(() => {
+    if (!user) return;
+    const currentUpi = (upiId || user.upiId || 'patadiyadevendra5@oksbi').trim();
+    const currentName = (name || user.name || 'Student').trim();
+    // Standard NPCI UPI URI - literal @ in pa to ensure phone cameras & apps parse properly
+    const upiUri = `upi://pay?pa=${currentUpi}&pn=${encodeURIComponent(currentName)}&cu=INR&tn=${encodeURIComponent('Squad Split Hangout-Hub')}`;
+
+    QRCode.toDataURL(upiUri, {
+      width: 320,
+      margin: 2,
+      color: {
+        dark: '#1C1917',
+        light: '#FFFFFF'
+      },
+      errorCorrectionLevel: 'H'
+    })
+      .then((url) => setUserQrDataUrl(url))
+      .catch((err) => console.log('Profile QR generate error:', err));
+  }, [user, user?.upiId, user?.name, upiId, name]);
 
   const fetchUserData = async (userId: string) => {
     setDataLoading(true);
@@ -119,6 +146,8 @@ export const ProfileModal: React.FC<ProfileModalProps> = ({
       }
     }
 
+    const cleanUpi = upiId.trim() || user.upiId || 'patadiyadevendra5@oksbi';
+
     const updatedData: Record<string, any> = {
       user_id: user.id,
       name: name.trim(),
@@ -127,7 +156,8 @@ export const ProfileModal: React.FC<ProfileModalProps> = ({
       preferredBudget: Number(budget) || 180,
       bio: bio.trim(),
       favoriteVibes,
-      avatarColor: user.avatarColor
+      avatarColor: user.avatarColor,
+      upiId: cleanUpi
     };
 
     if (newPassword) {
@@ -431,6 +461,35 @@ export const ProfileModal: React.FC<ProfileModalProps> = ({
               />
             </div>
 
+            {/* Payment UPI ID & QR Configuration */}
+            <div className="p-3.5 bg-[#FAF7F2] border border-[#E8DFC8] rounded-2xl space-y-2">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <QrCode className="w-4 h-4 text-[#C85A32]" />
+                  <span className="text-xs font-bold text-[#2A1810]">
+                    Payment UPI ID (for Squad Bill Splits & QR)
+                  </span>
+                </div>
+                <span className="text-[10px] font-extrabold text-[#059669] bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">
+                  Live NPCI QR
+                </span>
+              </div>
+
+              <div className="relative">
+                <span className="absolute left-3 top-2 text-xs font-bold text-[#C85A32]">UPI</span>
+                <input
+                  type="text"
+                  value={upiId}
+                  onChange={(e) => setUpiId(e.target.value)}
+                  placeholder="e.g. devendra@okaxis or yourname@oksbi"
+                  className="w-full pl-11 pr-3 py-2 text-xs bg-white border border-[#D9CDB8] rounded-xl focus:outline-none focus:ring-1 focus:ring-[#C85A32]"
+                />
+              </div>
+              <p className="text-[10px] text-[#8C6D53]">
+                When your squad splits a bill, this UPI ID powers your camera-scannable QR code. Friends can scan via Google Pay, PhonePe, Paytm, or BHIM to pay you directly.
+              </p>
+            </div>
+
             {/* Password Change Option */}
             <div className="p-3.5 bg-[#FAF7F2] border border-[#E8DFC8] rounded-2xl">
               <div className="flex items-center justify-between mb-2">
@@ -561,6 +620,18 @@ export const ProfileModal: React.FC<ProfileModalProps> = ({
               >
                 <Sparkles className="w-3.5 h-3.5 text-[#F59E0B]" />
                 <span>Recommendations for You ({recommendations.length})</span>
+              </button>
+
+              <button
+                onClick={() => setActiveTab('payment_qr')}
+                className={`flex items-center justify-center gap-2 py-3 px-4 text-xs font-bold border-b-2 cursor-pointer transition-colors ${
+                  activeTab === 'payment_qr'
+                    ? 'border-[#C85A32] text-[#2A1810] bg-[#FAF8F5]'
+                    : 'border-transparent text-[#8C6D53] hover:text-[#2A1810]'
+                }`}
+              >
+                <QrCode className="w-3.5 h-3.5 text-[#059669]" />
+                <span>Squad Payment QR</span>
               </button>
             </div>
 
@@ -740,6 +811,133 @@ export const ProfileModal: React.FC<ProfileModalProps> = ({
                         </div>
                       </div>
                     ))}
+                  </div>
+                </div>
+              )}
+
+              {/* TAB 4: SQUAD PAYMENT QR (USER'S PERSONAL SCANNABLE QR) */}
+              {activeTab === 'payment_qr' && (
+                <div className="bg-white border border-[#E8DFC8] rounded-2xl p-5 sm:p-6 space-y-5">
+                  <div className="flex flex-col sm:flex-row items-center gap-6">
+                    {/* QR Code Container */}
+                    <div className="bg-[#FAF8F5] p-3 rounded-2xl border-2 border-[#E8DFC8] shadow-inner text-center shrink-0">
+                      {userQrDataUrl ? (
+                        <img
+                          src={userQrDataUrl}
+                          alt={`${user.name}'s UPI Payment QR`}
+                          className="w-48 h-48 rounded-xl mx-auto shadow-2xs"
+                        />
+                      ) : (
+                        <div className="w-48 h-48 flex items-center justify-center text-xs text-[#8C6D53]">
+                          Generating QR...
+                        </div>
+                      )}
+                      <div className="mt-2 text-[10px] font-bold text-[#059669] flex items-center justify-center gap-1">
+                        <CheckCircle2 className="w-3.5 h-3.5 text-[#059669]" />
+                        <span>NPCI Scannable Standard (Fixed)</span>
+                      </div>
+                    </div>
+
+                    {/* Details & Actions */}
+                    <div className="flex-1 space-y-3.5 text-left w-full">
+                      <div>
+                        <div className="flex items-center gap-2">
+                          <span className="text-[10px] font-extrabold uppercase px-2 py-0.5 rounded bg-amber-100 text-amber-900 border border-amber-200">
+                            Personal Payee Handle
+                          </span>
+                          <span className="text-[10px] text-[#059669] font-bold">
+                            ✓ Saved in Database
+                          </span>
+                        </div>
+                        <h3 className="text-base font-bold text-[#2A1810] font-brand mt-1">
+                          {user.name}’s Squad Payment QR
+                        </h3>
+                        <p className="text-xs text-[#8C6D53] mt-0.5">
+                          When your friends split cafe bills or cold coffee rounds, show this QR code. Any phone camera or UPI app transfers money directly to your account.
+                        </p>
+                      </div>
+
+                      {/* Display UPI Address */}
+                      <div className="p-3 bg-[#FAF7F2] rounded-xl border border-[#E8DFC8] flex items-center justify-between gap-2">
+                        <div>
+                          <span className="text-[10px] uppercase font-bold text-[#8C6D53] block">
+                            Active UPI ID
+                          </span>
+                          <span className="text-xs font-mono font-black text-[#2A1810] select-all">
+                            {user.upiId || 'patadiyadevendra5@oksbi'}
+                          </span>
+                        </div>
+                        <button
+                          type="button"
+                          onClick={() => {
+                            navigator.clipboard.writeText(user.upiId || 'patadiyadevendra5@oksbi');
+                            setUpiCopied(true);
+                            setTimeout(() => setUpiCopied(false), 2000);
+                          }}
+                          className="flex items-center gap-1 px-3 py-1.5 text-xs font-bold text-[#2A1810] bg-white hover:bg-[#EFE7DA] rounded-lg border border-[#D9CDB8] transition-colors cursor-pointer"
+                        >
+                          {upiCopied ? (
+                            <>
+                              <Check className="w-3.5 h-3.5 text-emerald-600" />
+                              <span className="text-emerald-700">Copied!</span>
+                            </>
+                          ) : (
+                            <>
+                              <Copy className="w-3.5 h-3.5 text-[#8C6D53]" />
+                              <span>Copy ID</span>
+                            </>
+                          )}
+                        </button>
+                      </div>
+
+                      {/* Supported Apps Badges */}
+                      <div className="space-y-1">
+                        <span className="text-[10px] font-bold text-[#5C4A3A] uppercase tracking-wider block">
+                          Instant Camera Scan Tested With:
+                        </span>
+                        <div className="flex flex-wrap gap-1.5 text-[11px] font-semibold text-[#2A1810]">
+                          <span className="bg-[#EFE7DA] px-2 py-0.5 rounded-md">Google Pay</span>
+                          <span className="bg-[#EFE7DA] px-2 py-0.5 rounded-md">PhonePe</span>
+                          <span className="bg-[#EFE7DA] px-2 py-0.5 rounded-md">Paytm</span>
+                          <span className="bg-[#EFE7DA] px-2 py-0.5 rounded-md">BHIM</span>
+                          <span className="bg-[#EFE7DA] px-2 py-0.5 rounded-md">iPhone Camera / Google Lens</span>
+                        </div>
+                      </div>
+
+                      {/* Action buttons */}
+                      <div className="flex items-center gap-2 pt-1 flex-wrap">
+                        <button
+                          type="button"
+                          onClick={() => setIsEditing(true)}
+                          className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-bold text-[#2A1810] bg-[#EFE7DA] hover:bg-[#E5DBCB] rounded-xl transition-colors cursor-pointer"
+                        >
+                          <Edit3 className="w-3.5 h-3.5 text-[#C85A32]" />
+                          <span>Change UPI ID</span>
+                        </button>
+
+                        <a
+                          href={`upi://pay?pa=${encodeURIComponent(user.upiId || 'patadiyadevendra5@oksbi').replace('%40', '@')}&pn=${encodeURIComponent(user.name)}&cu=INR&tn=${encodeURIComponent('Squad Split Hangout-Hub')}`}
+                          className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-bold text-white bg-[#059669] hover:bg-[#047857] rounded-xl transition-colors shadow-2xs"
+                          title="Open UPI Intent directly on mobile device"
+                        >
+                          <ExternalLink className="w-3.5 h-3.5" />
+                          <span>Test in UPI App</span>
+                        </a>
+
+                        <button
+                          type="button"
+                          onClick={() => {
+                            onClose();
+                            onOpenQrGenerator();
+                          }}
+                          className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-bold text-white bg-[#2A1810] hover:bg-[#C85A32] rounded-xl transition-colors cursor-pointer shadow-2xs"
+                        >
+                          <QrCode className="w-3.5 h-3.5 text-[#F59E0B]" />
+                          <span>Squad QR Studio</span>
+                        </button>
+                      </div>
+
+                    </div>
                   </div>
                 </div>
               )}

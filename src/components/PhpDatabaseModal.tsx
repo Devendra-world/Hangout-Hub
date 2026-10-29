@@ -383,131 +383,131 @@ class Database {
       <div className="bg-[#FAF7F2] text-[#2A1810] rounded-3xl shadow-2xl border border-[#E8DFC8] w-full max-w-5xl max-h-[94vh] flex flex-col overflow-hidden">
         
         {/* Header */}
-        <div className="p-4 sm:p-5 border-b border-[#E8DFC8] bg-white/80 flex items-start justify-between gap-4">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-2xl bg-[#7C3AED]/10 text-[#7C3AED] flex items-center justify-center shrink-0 border border-[#7C3AED]/20 shadow-xs">
+        <div className="p-3.5 sm:p-5 border-b border-[#E8DFC8] bg-white/80 flex items-start justify-between gap-3 flex-wrap sm:flex-nowrap">
+          <div className="flex items-center gap-2.5 sm:gap-3">
+            <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-2xl bg-[#7C3AED]/10 text-[#7C3AED] flex items-center justify-center shrink-0 border border-[#7C3AED]/20 shadow-xs">
               <Database className="w-5 h-5" />
             </div>
             <div>
-              <div className="flex items-center gap-2 flex-wrap">
-                <h2 className="text-lg sm:text-xl font-black font-brand text-[#2A1810]">
-                  PHP Backend & Database Administration
+              <div className="flex items-center gap-1.5 sm:gap-2 flex-wrap">
+                <h2 className="text-base sm:text-lg lg:text-xl font-black font-brand text-[#2A1810]">
+                  Database Administration
                 </h2>
-                <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-emerald-100 text-emerald-800 border border-emerald-300">
-                  <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] sm:text-[11px] font-bold bg-emerald-100 text-emerald-800 border border-emerald-300">
+                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
                   PHP 8.2 Active
                 </span>
-                <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[11px] font-semibold bg-[#EFE7DA] text-[#5C4A3A]">
-                  Admin CRUD Authorize
+                <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] sm:text-[11px] font-semibold bg-[#EFE7DA] text-[#5C4A3A]">
+                  Admin CRUD
                 </span>
               </div>
-              <p className="text-xs text-[#735A45] mt-0.5">
+              <p className="text-[11px] sm:text-xs text-[#735A45] mt-0.5">
                 Full CRUD control over SQL tables, REST endpoints, and schema downloads for Devendra and campus admins.
               </p>
             </div>
           </div>
 
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-1.5 sm:gap-2 shrink-0 ml-auto sm:ml-0">
             <button
               onClick={() => {
                 fetchBackendInfo();
                 fetchTableData(selectedTable);
               }}
               title="Refresh Status & Tables"
-              className="p-2 text-[#735A45] hover:text-[#2A1810] hover:bg-[#EFE7DA] rounded-xl transition-colors cursor-pointer"
+              className="p-1.5 sm:p-2 text-[#735A45] hover:text-[#2A1810] hover:bg-[#EFE7DA] rounded-xl transition-colors cursor-pointer"
             >
               <RefreshCw className={`w-4 h-4 ${tableLoading || loading ? 'animate-spin' : ''}`} />
             </button>
             <button
               onClick={onClose}
-              className="p-2 text-[#735A45] hover:text-[#2A1810] hover:bg-[#EFE7DA] rounded-xl transition-colors cursor-pointer"
+              className="p-1.5 sm:p-2 text-[#735A45] hover:text-[#2A1810] hover:bg-[#EFE7DA] rounded-xl transition-colors cursor-pointer"
             >
               <X className="w-5 h-5" />
             </button>
           </div>
         </div>
 
-        {/* Tab Navigation */}
-        <div className="flex items-center gap-1 px-5 pt-2.5 border-b border-[#E8DFC8] bg-[#FAF7F2] overflow-x-auto scrollbar-none text-xs sm:text-sm font-bold">
+        {/* Tab Navigation (Responsive, prevents overflow) */}
+        <div className="flex items-center gap-1 sm:gap-1.5 px-3 sm:px-5 pt-2 border-b border-[#E8DFC8] bg-[#FAF7F2] overflow-x-auto scrollbar-thin text-xs font-bold">
           <button
             onClick={() => setActiveTab('crud')}
-            className={`px-4 py-2 rounded-t-xl transition-all cursor-pointer whitespace-nowrap flex items-center gap-1.5 ${
+            className={`px-3 py-1.5 sm:px-4 sm:py-2 rounded-t-xl transition-all cursor-pointer whitespace-nowrap flex items-center gap-1.5 ${
               activeTab === 'crud'
                 ? 'bg-white text-[#2A1810] border-t-2 border-[#C85A32] shadow-xs'
                 : 'text-[#735A45] hover:text-[#2A1810]'
             }`}
           >
-            <Table className="w-4 h-4 text-[#C85A32]" />
-            <span>Database Tables (CRUD)</span>
+            <Table className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#C85A32]" />
+            <span>CRUD Tables</span>
           </button>
 
           <button
             onClick={() => setActiveTab('overview')}
-            className={`px-4 py-2 rounded-t-xl transition-all cursor-pointer whitespace-nowrap flex items-center gap-1.5 ${
+            className={`px-3 py-1.5 sm:px-4 sm:py-2 rounded-t-xl transition-all cursor-pointer whitespace-nowrap flex items-center gap-1.5 ${
               activeTab === 'overview'
                 ? 'bg-white text-[#2A1810] border-t-2 border-[#C85A32] shadow-xs'
                 : 'text-[#735A45] hover:text-[#2A1810]'
             }`}
           >
-            <Layers className="w-4 h-4 text-[#7C3AED]" />
-            <span>Architecture & Health</span>
+            <Layers className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#7C3AED]" />
+            <span>Health & Status</span>
           </button>
 
           <button
             onClick={() => setActiveTab('schema')}
-            className={`px-4 py-2 rounded-t-xl transition-all cursor-pointer whitespace-nowrap flex items-center gap-1.5 ${
+            className={`px-3 py-1.5 sm:px-4 sm:py-2 rounded-t-xl transition-all cursor-pointer whitespace-nowrap flex items-center gap-1.5 ${
               activeTab === 'schema'
                 ? 'bg-white text-[#2A1810] border-t-2 border-[#C85A32] shadow-xs'
                 : 'text-[#735A45] hover:text-[#2A1810]'
             }`}
           >
-            <Code2 className="w-4 h-4 text-[#059669]" />
-            <span>MySQL Schema (database.sql)</span>
+            <Code2 className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#059669]" />
+            <span>MySQL Schema</span>
           </button>
 
           <button
             onClick={() => setActiveTab('endpoints')}
-            className={`px-4 py-2 rounded-t-xl transition-all cursor-pointer whitespace-nowrap flex items-center gap-1.5 ${
+            className={`px-3 py-1.5 sm:px-4 sm:py-2 rounded-t-xl transition-all cursor-pointer whitespace-nowrap flex items-center gap-1.5 ${
               activeTab === 'endpoints'
                 ? 'bg-white text-[#2A1810] border-t-2 border-[#C85A32] shadow-xs'
                 : 'text-[#735A45] hover:text-[#2A1810]'
             }`}
           >
-            <Terminal className="w-4 h-4 text-[#D97706]" />
+            <Terminal className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#D97706]" />
             <span>PHP API Source</span>
           </button>
 
           <button
             onClick={() => setActiveTab('xampp')}
-            className={`px-4 py-2 rounded-t-xl transition-all cursor-pointer whitespace-nowrap flex items-center gap-1.5 ${
+            className={`px-3 py-1.5 sm:px-4 sm:py-2 rounded-t-xl transition-all cursor-pointer whitespace-nowrap flex items-center gap-1.5 ${
               activeTab === 'xampp'
                 ? 'bg-white text-[#2A1810] border-t-2 border-[#C85A32] shadow-xs'
                 : 'text-[#735A45] hover:text-[#2A1810]'
             }`}
           >
-            <Sparkles className="w-4 h-4 text-[#2563EB]" />
-            <span>XAMPP Hosting Guide</span>
+            <Sparkles className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#2563EB]" />
+            <span>Hosting Guide</span>
           </button>
         </div>
 
         {/* Notice alert */}
         {crudNotice && (
-          <div className="bg-emerald-50 text-emerald-900 border-b border-emerald-200 px-5 py-2 text-xs flex items-center gap-2">
+          <div className="bg-emerald-50 text-emerald-900 border-b border-emerald-200 px-4 sm:px-5 py-2 text-xs flex items-center gap-2">
             <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
             <span className="font-semibold">{crudNotice}</span>
           </div>
         )}
 
         {/* Modal Body */}
-        <div className="p-4 sm:p-6 overflow-y-auto space-y-5 flex-1 bg-[#FAF7F2]">
+        <div className="p-3.5 sm:p-5 lg:p-6 overflow-y-auto space-y-4 sm:space-y-5 flex-1 bg-[#FAF7F2]">
           
           {/* TAB 1: INTERACTIVE CRUD ON DATABASE TABLES */}
           {activeTab === 'crud' && (
             <div className="space-y-4">
-              {/* Table Selector & Top Action Bar */}
-              <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 bg-white p-3.5 rounded-2xl border border-[#E8DFC8]">
+              {/* Table Selector & Top Action Bar (Two-tier flex, zero overflow) */}
+              <div className="flex flex-col md:flex-row items-stretch md:items-center justify-between gap-2.5 sm:gap-3 bg-white p-3 sm:p-3.5 rounded-2xl border border-[#E8DFC8]">
                 {/* Tables Buttons */}
-                <div className="flex items-center gap-1.5 overflow-x-auto scrollbar-none pb-1 sm:pb-0">
+                <div className="flex flex-wrap items-center gap-1 sm:gap-1.5">
                   {(['spots', 'users', 'survey_responses', 'partnership_proposals', 'user_history'] as TableName[]).map((tbl) => (
                     <button
                       key={tbl}
@@ -516,7 +516,7 @@ class Database {
                         setEditingRow(null);
                         setIsAddingNew(false);
                       }}
-                      className={`px-3 py-1.5 text-xs font-bold rounded-xl cursor-pointer transition-all whitespace-nowrap ${
+                      className={`px-2.5 py-1 text-[11px] sm:text-xs font-bold rounded-lg sm:rounded-xl cursor-pointer transition-all whitespace-nowrap ${
                         selectedTable === tbl
                           ? 'bg-[#2A1810] text-[#FAF7F2] shadow-xs'
                           : 'bg-[#FAF8F5] text-[#5C4A3A] hover:bg-[#EFE7DA]'
@@ -527,9 +527,9 @@ class Database {
                   ))}
                 </div>
 
-                <div className="flex items-center gap-2">
+                <div className="flex items-center gap-2 w-full md:w-auto">
                   {/* Search filter */}
-                  <div className="relative flex-1 sm:w-56">
+                  <div className="relative flex-1 md:w-48 lg:w-56">
                     <Search className="w-3.5 h-3.5 text-[#8C6D53] absolute left-2.5 top-2.5" />
                     <input
                       type="text"
@@ -546,7 +546,7 @@ class Database {
                     className="flex items-center gap-1 px-3 py-1.5 text-xs font-bold text-white bg-[#C85A32] hover:bg-[#A84520] rounded-xl shadow-xs transition-colors cursor-pointer shrink-0"
                   >
                     <Plus className="w-3.5 h-3.5" />
-                    <span>Add Row</span>
+                    <span>+ Add</span>
                   </button>
                 </div>
               </div>

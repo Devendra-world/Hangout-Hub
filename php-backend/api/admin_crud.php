@@ -96,6 +96,108 @@ if ($action === 'create') {
         unset($data['password']);
     }
 
+    // Schema safety defaults for spots
+    if ($table === 'spots') {
+        $defaults = [
+            'name' => 'Campus Cafe',
+            'tagline' => 'Student verified campus spot',
+            'city' => 'Ahmedabad',
+            'campus_name' => 'Local Campus',
+            'neighborhood' => 'Navrangpura',
+            'distance_to_campus' => 'Near campus gate',
+            'vibe_category' => 'Budget Bite & Chill',
+            'cost_min' => 100,
+            'cost_max' => 200,
+            'cost_avg' => 150,
+            'popular_order_example' => 'Chai + Snack combo',
+            'official_claim_cost' => '₹250 for two',
+            'max_group_size' => 8,
+            'seating_description' => 'Comfortable group seating',
+            'push_together_allowed' => 1,
+            'booth_count' => 0,
+            'reservation_needed' => 0,
+            'reservation_tip' => 'Walk-in friendly',
+            'wifi_speed_mbps' => 40,
+            'wifi_reliability' => 'Decent for Browsing',
+            'power_outlets' => 'Select Wall Tables',
+            'noise_decibels' => 65,
+            'noise_description' => 'Pleasant campus banter',
+            'board_games_available' => 0,
+            'outside_cake_allowed' => 1,
+            'student_discount_available' => 0,
+            'discount_note' => 'Show college ID',
+            'air_conditioned' => 1,
+            'open_late_night' => 0,
+            'closing_time' => '11:00 PM',
+            'has_reel' => 0,
+            'reel_url' => '',
+            'reel_creator' => '',
+            'reel_hype_claim' => '',
+            'ground_reality_truth' => 'Student verified prices and seating',
+            'reality_score' => 90,
+            'scout_name' => 'Campus Scout',
+            'scout_college' => 'Ahmedabad Student Network',
+            'scout_notes' => 'Great place to study and chill.',
+            'verified_date' => date('M Y'),
+            'upvotes' => 1,
+            'tags_json' => json_encode(['Ahmedabad', 'Student Verified', 'Under ₹200'])
+        ];
+        $data = array_merge($defaults, $data);
+    }
+
+    // Schema safety defaults for users
+    if ($table === 'users') {
+        $defaults = [
+            'name' => 'Student Scout',
+            'email' => 'scout_' . substr(md5(uniqid()), 0, 6) . '@campus.edu',
+            'password_hash' => password_hash('password123', PASSWORD_DEFAULT),
+            'role' => 'student',
+            'college' => 'Ahmedabad Campus',
+            'city' => 'Ahmedabad',
+            'preferred_budget' => 180,
+            'favorite_vibes_json' => json_encode(['Study & Projects', 'Budget Bite & Chill']),
+            'bio' => 'Campus scout reviewer',
+            'avatar_color' => '#C85A32',
+            'upi_id' => 'scout@oksbi'
+        ];
+        $data = array_merge($defaults, $data);
+    }
+
+    // Schema safety defaults for survey responses
+    if ($table === 'survey_responses') {
+        $defaults = [
+            'student_name' => 'Campus Student',
+            'college_or_campus' => 'Ahmedabad University',
+            'year_of_study' => 'Undergraduate',
+            'monthly_hangout_budget' => '₹2,000 - ₹3,500',
+            'primary_frustration' => 'Honest pricing',
+            'worst_experience_with_apps' => 'Hidden service charges and unexpected taxes',
+            'ideal_spot_priorities_json' => json_encode(['Honest per-head cost', 'Big group table']),
+            'max_acceptable_cost_per_head' => 200,
+            'average_group_size' => 6,
+            'submitted_at' => date('Y-m-d')
+        ];
+        $data = array_merge($defaults, $data);
+    }
+
+    // Schema safety defaults for partnership proposals
+    if ($table === 'partnership_proposals') {
+        $defaults = [
+            'cafe_name' => 'Local Cafe',
+            'owner_name' => 'Cafe Manager',
+            'contact_email' => 'partner@cafe.com',
+            'contact_phone' => '',
+            'address' => 'Campus Road, Ahmedabad',
+            'proposed_per_person_cost' => 180,
+            'group_capacity' => 10,
+            'offered_student_discount' => '10% student discount',
+            'has_fast_wifi' => 1,
+            'notes' => '',
+            'submitted_at' => date('Y-m-d')
+        ];
+        $data = array_merge($defaults, $data);
+    }
+
     $columns = array_keys($data);
     $placeholders = array_map(fn($col) => ":{$col}", $columns);
 

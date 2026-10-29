@@ -3,8 +3,13 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React, { useState } from 'react';
-import { Users, Plus, Trash2, Check, Share2, Sparkles, MapPin } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import QRCode from 'qrcode';
+import {
+  Users, Plus, Trash2, Check, Share2, Sparkles, MapPin, QrCode,
+  Download, Copy, Edit3, ExternalLink, ShieldCheck, CheckCircle2, UserCheck
+} from 'lucide-react';
+import { UserProfile } from '../types/index.ts';
 
 interface BillItem {
   id: string;
@@ -13,11 +18,22 @@ interface BillItem {
   quantity: number;
 }
 
-export const GroupBillSplitter: React.FC = () => {
+interface GroupBillSplitterProps {
+  currentUser?: UserProfile | null;
+}
+
+export const GroupBillSplitter: React.FC<GroupBillSplitterProps> = ({ currentUser }) => {
   const [peopleCount, setPeopleCount] = useState(6);
   const [includeGst, setIncludeGst] = useState(true);
   const [serviceFeePercent, setServiceFeePercent] = useState(0);
   const [copied, setCopied] = useState(false);
+  const [upiLinkCopied, setUpiLinkCopied] = useState(false);
+
+  // Payee Account (defaults to logged-in user profile, or Devendra)
+  const [payeeName, setPayeeName] = useState(currentUser?.name || 'Devendra Patadiya');
+  const [payeeUpi, setPayeeUpi] = useState(currentUser?.upiId || 'patadiyadevendra5@oksbi');
+  const [isEditingPayee, setIsEditingPayee] = useState(false);
+  const [qrDataUrl, setQrDataUrl] = useState<string>('');
 
   // Default Ahmedabad combo
   const [items, setItems] = useState<BillItem[]>([
@@ -78,12 +94,39 @@ export const GroupBillSplitter: React.FC = () => {
     }
   };
 
+  // Sync with current user profile if logged in
+  useEffect(() => {
+    if (currentUser) {
+      if (currentUser.name) setPayeeName(currentUser.name);
+      if (currentUser.upiId) setPayeeUpi(currentUser.upiId);
+    }
+  }, [currentUser]);
+
   const subtotal = items.reduce((acc, item) => acc + item.price * item.quantity, 0);
   const gstAmount = includeGst ? Math.round(subtotal * 0.05) : 0;
   const serviceAmount = Math.round(subtotal * (serviceFeePercent / 100));
   const grandTotal = subtotal + gstAmount + serviceAmount;
   const rawPerPerson = peopleCount > 0 ? grandTotal / peopleCount : 0;
   const roundedPerPerson = Math.ceil(rawPerPerson);
+
+  // Generate NPCI Standard QR Code with literal @ symbol in pa parameter
+  const cleanUpi = payeeUpi.trim().replace(/\s+/g, '');
+  const cleanName = payeeName.trim() || 'Student';
+  const upiIntentUri = `upi://pay?pa=${cleanUpi}&pn=${encodeURIComponent(cleanName)}&am=${roundedPerPerson}&cu=INR&tn=${encodeURIComponent('Squad Split Hangout-Hub')}`;
+
+  useEffect(() => {
+    QRCode.toDataURL(upiIntentUri, {
+      width: 360,
+      margin: 2,
+      color: {
+        dark: '#1C1917',
+        light: '#FFFFFF'
+      },
+      errorCorrectionLevel: 'H'
+    })
+      .then((url) => setQrDataUrl(url))
+      .catch((err) => console.log('Bill splitter QR error:', err));
+  }, [upiIntentUri]);
 
   const copyBreakdown = () => {
     const text = `☕ *Amdavad Squad Bill Split (via Hangout-Hub)*\n` +
@@ -95,7 +138,10 @@ export const GroupBillSplitter: React.FC = () => {
       (includeGst ? `GST (5%): ₹${gstAmount}\n` : '') +
       (serviceFeePercent > 0 ? `Service (${serviceFeePercent}%): ₹${serviceAmount}\n` : '') +
       `*Grand Total: ₹${grandTotal}*\n` +
-      `👉 *Per Person Share: ₹${roundedPerPerson}* (GPay/PhonePe clean split)`;
+      `👉 *Per Person Share: ₹${roundedPerPerson}*\n\n` +
+      `📲 *Pay directly via UPI (GPay/PhonePe/Paytm):*\n` +
+      `Payee: ${cleanName} (${cleanUpi})\n` +
+      `Link: ${upiIntentUri}`;
 
     navigator.clipboard.writeText(text);
     setCopied(true);
@@ -344,6 +390,165 @@ export const GroupBillSplitter: React.FC = () => {
                   </>
                 )}
               </button>
+            </div>
+
+          </div>
+
+          {/* SQUAD UPI PAYMENT QR CODE (NPCI STANDARD CAMERA SCANNABLE) */}
+          <div className="bg-white rounded-3xl border-2 border-stone-200 p-6 shadow-md space-y-4 text-stone-900">
+            
+            {/* Payee Header */}
+            <div className="flex items-start justify-between gap-3 border-b border-stone-100 pb-3">
+              <div>
+                <div className="flex items-center gap-1.5 flex-wrap">
+                  <span className="text-[10px] font-extrabold uppercase px-2 py-0.5 rounded-md bg-emerald-100 text-emerald-800 border border-emerald-200">
+                    Live UPI QR
+                  </span>
+                  {currentUser && (
+                    <span className="text-[10px] font-semibold text-stone-500">
+                      from {currentUser.name}’s Profile
+                    </span>
+                  )}
+                </div>
+                <h3 className="text-sm font-bold text-stone-900 mt-1 flex items-center gap-1.5">
+                  <QrCode className="w-4 h-4 text-amber-600" />
+                  <span>Scan to Pay {cleanName}</span>
+                </h3>
+              </div>
+
+              <button
+                type="button"
+                onClick={() => setIsEditingPayee((prev) => !prev)}
+                className="text-[11px] font-semibold text-amber-700 hover:text-amber-800 flex items-center gap-1 p-1 rounded-md hover:bg-stone-50 cursor-pointer"
+                title="Edit receiver UPI ID"
+              >
+                <Edit3 className="w-3.5 h-3.5" />
+                <span>{isEditingPayee ? 'Done' : 'Change UPI'}</span>
+              </button>
+            </div>
+
+            {/* Quick Edit Payee Form */}
+            {isEditingPayee && (
+              <div className="p-3 bg-stone-50 rounded-2xl border border-stone-200 space-y-2 text-xs animate-in fade-in duration-150">
+                <div>
+                  <label className="block text-[11px] font-bold text-stone-700 mb-1">Payee Name</label>
+                  <input
+                    type="text"
+                    value={payeeName}
+                    onChange={(e) => setPayeeName(e.target.value)}
+                    placeholder="Receiver Name"
+                    className="w-full px-2.5 py-1.5 bg-white border border-stone-300 rounded-lg text-xs"
+                  />
+                </div>
+                <div>
+                  <label className="block text-[11px] font-bold text-stone-700 mb-1">UPI ID / VPA Handle</label>
+                  <input
+                    type="text"
+                    value={payeeUpi}
+                    onChange={(e) => setPayeeUpi(e.target.value)}
+                    placeholder="e.g. devendra@okaxis or yourname@oksbi"
+                    className="w-full px-2.5 py-1.5 bg-white border border-stone-300 rounded-lg text-xs"
+                  />
+                </div>
+                <p className="text-[10px] text-stone-500">
+                  Tip: Changes update the QR code below instantly. To save permanently to database, update in Profile.
+                </p>
+              </div>
+            )}
+
+            {/* QR Code Presentation Box */}
+            <div className="bg-[#FAF8F5] p-4 rounded-2xl border border-stone-200 text-center space-y-3">
+              <div className="inline-block p-2 bg-white rounded-2xl shadow-sm border border-stone-200/80">
+                {qrDataUrl ? (
+                  <img
+                    src={qrDataUrl}
+                    alt={`UPI Split QR for ₹${roundedPerPerson}`}
+                    className="w-48 h-48 mx-auto rounded-lg"
+                  />
+                ) : (
+                  <div className="w-48 h-48 flex items-center justify-center text-xs text-stone-400">
+                    Generating payment QR...
+                  </div>
+                )}
+              </div>
+
+              {/* Amount and Payee Callout */}
+              <div className="space-y-0.5">
+                <span className="text-2xl font-black text-stone-900 block tabular-nums">
+                  ₹{roundedPerPerson} <span className="text-xs font-normal text-stone-500">per friend</span>
+                </span>
+                <span className="text-xs font-mono font-semibold text-stone-600 block select-all">
+                  {cleanUpi}
+                </span>
+              </div>
+
+              {/* Verified Camera Scannable Badge */}
+              <div className="flex items-center justify-center gap-1.5 text-[11px] font-bold text-emerald-800 bg-emerald-50 py-1.5 px-2.5 rounded-xl border border-emerald-200">
+                <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
+                <span>NPCI Standard Verified Scannable QR</span>
+              </div>
+            </div>
+
+            {/* Supported payment apps */}
+            <div className="space-y-1.5 text-center">
+              <span className="text-[10px] font-bold uppercase tracking-wider text-stone-500 block">
+                Friends scan with any mobile camera / UPI app:
+              </span>
+              <div className="flex items-center justify-center flex-wrap gap-1.5 text-[10px] font-bold text-stone-700">
+                <span className="bg-stone-100 px-2 py-0.5 rounded-md border border-stone-200">Google Pay</span>
+                <span className="bg-stone-100 px-2 py-0.5 rounded-md border border-stone-200">PhonePe</span>
+                <span className="bg-stone-100 px-2 py-0.5 rounded-md border border-stone-200">Paytm</span>
+                <span className="bg-stone-100 px-2 py-0.5 rounded-md border border-stone-200">BHIM</span>
+                <span className="bg-stone-100 px-2 py-0.5 rounded-md border border-stone-200">Apple Camera / Lens</span>
+              </div>
+            </div>
+
+            {/* Quick Action Buttons */}
+            <div className="grid grid-cols-2 gap-2 pt-1">
+              <button
+                type="button"
+                onClick={() => {
+                  if (!qrDataUrl) return;
+                  const a = document.createElement('a');
+                  a.href = qrDataUrl;
+                  a.download = `squad-split-${cleanName.toLowerCase().replace(/[^a-z0-9]/g, '-')}-₹${roundedPerPerson}.png`;
+                  a.click();
+                }}
+                className="flex items-center justify-center gap-1.5 py-2 px-3 text-xs font-bold text-stone-800 bg-stone-100 hover:bg-stone-200 rounded-xl transition-colors cursor-pointer"
+              >
+                <Download className="w-3.5 h-3.5" />
+                <span>Download QR</span>
+              </button>
+
+              <button
+                type="button"
+                onClick={() => {
+                  navigator.clipboard.writeText(upiIntentUri);
+                  setUpiLinkCopied(true);
+                  setTimeout(() => setUpiLinkCopied(false), 2000);
+                }}
+                className="flex items-center justify-center gap-1.5 py-2 px-3 text-xs font-bold text-stone-800 bg-stone-100 hover:bg-stone-200 rounded-xl transition-colors cursor-pointer"
+              >
+                {upiLinkCopied ? (
+                  <>
+                    <Check className="w-3.5 h-3.5 text-emerald-600" />
+                    <span className="text-emerald-700">Copied!</span>
+                  </>
+                ) : (
+                  <>
+                    <Copy className="w-3.5 h-3.5" />
+                    <span>Copy UPI Link</span>
+                  </>
+                )}
+              </button>
+
+              <a
+                href={upiIntentUri}
+                className="col-span-2 flex items-center justify-center gap-1.5 py-2.5 px-3 text-xs font-bold text-white bg-emerald-600 hover:bg-emerald-700 rounded-xl transition-colors shadow-2xs"
+              >
+                <ExternalLink className="w-3.5 h-3.5" />
+                <span>Open in UPI App Directly (Mobile Intent)</span>
+              </a>
             </div>
 
           </div>

@@ -122,7 +122,7 @@ foreach ($allSpots as $row) {
     $recommended[] = [
         'spot' => $spot,
         'recommendationScore' => $finalScore,
-        'primaryReason' => $reasons[0] ?? 'Popular Ahmedabad campus adda',
+        'primaryReason' => $reasons[0] ?? 'Popular Ahmedabad campus spot',
         'allReasons' => array_slice($reasons, 0, 3)
     ];
 }

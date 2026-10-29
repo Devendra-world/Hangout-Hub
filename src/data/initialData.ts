@@ -330,7 +330,7 @@ export const INITIAL_SPOTS: HangoutSpot[] = [
     campusName: 'Bodakdev & SBR',
     neighborhood: 'Bodakdev',
     distanceToCampus: '2.8 km (12 min transit from Vastrapur)',
-    vibeCategory: 'Late Night Adda',
+    vibeCategory: 'Late Night Hangout',
     realPerPersonCost: {
       min: 280,
       max: 460,
@@ -509,8 +509,8 @@ export const INITIAL_SPOTS: HangoutSpot[] = [
   },
   {
     id: 'spot-gnr-teapost',
-    name: 'Tea Post & Adda Benches',
-    tagline: 'Massive open-air garden adda right outside PDPU & GNLU gates with ₹40 ginger pudina chai & bun maska',
+    name: 'Tea Post & Campus Garden Benches',
+    tagline: 'Massive open-air garden hangout right outside PDPU & GNLU gates with ₹40 ginger pudina chai & bun maska',
     city: 'Gandhinagar',
     campusName: 'PDPU, GNLU & DA-IICT',
     neighborhood: 'Raysan / Bhaijipura',
@@ -547,16 +547,16 @@ export const INITIAL_SPOTS: HangoutSpot[] = [
     },
     reelRealityCheck: {
       hasReel: true,
-      reelUrl: 'https://instagram.com/reel/pdpu-tea-adda',
+      reelUrl: 'https://instagram.com/reel/pdpu-tea-post',
       reelCreator: '@gandhinagar_diaries',
       reelHypeClaim: 'Fairytale garden chai lounge with gourmet snacks!',
-      groundRealityTruth: 'It is a friendly, relaxed campus garden adda with endless seating. Perfect for evening de-stress sessions with 15 hostel mates without spending over ₹80 each.',
+      groundRealityTruth: 'It is a friendly, relaxed campus garden hangout with endless seating. Perfect for evening de-stress sessions with 15 hostel mates without spending over ₹80 each.',
       realityScore: 92
     },
     scoutReview: {
       scoutName: 'Siddharth & Megha (PDPU Energy Studies)',
       scoutCollege: 'PDPU Gandhinagar Scout',
-      scoutNotes: 'The go-to adda after 5 PM lectures. Never spent more than ₹80 each even after two cups of chai and hot samosas.',
+      scoutNotes: 'The go-to hangout spot after 5 PM lectures. Never spent more than ₹80 each even after two cups of chai and hot samosas.',
       verifiedDate: 'Oct 2026',
       upvotes: 245
     },
@@ -631,7 +631,7 @@ export const INITIAL_SPOTS: HangoutSpot[] = [
   // ================= NATIONAL CAMPUS SPOTS (SHOWCASING UNIVERSAL REACH) =================
   {
     id: 'spot-delhi-tomuncle',
-    name: "Tom Uncle's Maggi Point & Adda",
+    name: "Tom Uncle's Maggi Point & Campus Spot",
     tagline: 'Legendary DU North Campus outdoor benches with 50+ varieties of masala maggi & cold coffee',
     city: 'Delhi NCR',
     campusName: 'DU North Campus (Hindu & Miranda)',
@@ -678,11 +678,11 @@ export const INITIAL_SPOTS: HangoutSpot[] = [
     scoutReview: {
       scoutName: 'Priya & Varun (Miranda & Hindu College)',
       scoutCollege: 'Delhi University Scout Network',
-      scoutNotes: 'The sacred adda of North Campus. Everyone from freshers to alumni gathers here.',
+      scoutNotes: 'The sacred hangout of North Campus. Everyone from freshers to alumni gathers here.',
       verifiedDate: 'Oct 2026',
       upvotes: 380
     },
-    tags: ['Delhi NCR', 'DU North Campus', 'Under ₹100', 'Mass Group', 'Iconic Adda'],
+    tags: ['Delhi NCR', 'DU North Campus', 'Under ₹100', 'Mass Group', 'Iconic Spot'],
     visualTheme: {
       primaryColor: '#B45309',
       patternType: 'warm',
@@ -802,7 +802,7 @@ export const INITIAL_SPOTS: HangoutSpot[] = [
       verifiedDate: 'Oct 2026',
       upvotes: 310
     },
-    tags: ['Pune', 'FC Road', 'Fergusson College', 'Under ₹100', 'Heritage Adda'],
+    tags: ['Pune', 'FC Road', 'Fergusson College', 'Under ₹100', 'Heritage Spot'],
     visualTheme: {
       primaryColor: '#78350F',
       patternType: 'warm',
@@ -858,7 +858,7 @@ export const INITIAL_SPOTS: HangoutSpot[] = [
     scoutReview: {
       scoutName: 'Rhea & Dev (Mithibai BMM)',
       scoutCollege: 'Mithibai College Scout',
-      scoutNotes: 'The legendary Juhu college adda. Our whole college festival committee holds briefings here.',
+      scoutNotes: 'The legendary Juhu college hangout spot. Our whole college festival committee holds briefings here.',
       verifiedDate: 'Oct 2026',
       upvotes: 420
     },

@@ -113,7 +113,7 @@ if ($method === 'POST') {
 
     $id = 'spot-' . round(microtime(true) * 1000);
     $name = trim($body['name']);
-    $tagline = !empty($body['tagline']) ? trim($body['tagline']) : 'Student verified campus hangout adda';
+    $tagline = !empty($body['tagline']) ? trim($body['tagline']) : 'Student verified campus hangout spot';
     $city = !empty($body['city']) ? trim($body['city']) : 'Ahmedabad';
     $campusName = !empty($body['campusName']) ? trim($body['campusName']) : 'Local College Campus';
     $neighborhood = trim($body['neighborhood']);

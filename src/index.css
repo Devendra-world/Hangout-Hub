@@ -18,6 +18,7 @@
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     letter-spacing: -0.01em;
+    transition: background-color 0.25s ease, color 0.25s ease;
   }
 
   h1, h2, h3, h4, h5, h6 {
@@ -61,4 +62,110 @@
 }
 ::-webkit-scrollbar-thumb:hover {
   background: #C4B8A6;
+}
+
+/* ==============================================================================
+   NIGHT MODE (WARM ESPRESSO / NOCTURNAL CAFE PALETTE)
+   ============================================================================== */
+html.dark {
+  color-scheme: dark;
+}
+
+html.dark body {
+  background-color: #120E0B !important;
+  color: #F7EFE6 !important;
+}
+
+html.dark ::-webkit-scrollbar-thumb {
+  background: #3E3025;
+}
+html.dark ::-webkit-scrollbar-thumb:hover {
+  background: #544133;
+}
+
+/* Header & Navigation in Night Mode */
+html.dark header {
+  background-color: rgba(22, 17, 13, 0.95) !important;
+  border-color: #33271F !important;
+}
+
+html.dark footer {
+  background-color: #15100C !important;
+  border-color: #33271F !important;
+}
+
+/* Base card and background transformations in Night Mode */
+html.dark .bg-white {
+  background-color: #1D1612 !important;
+  color: #F7EFE6 !important;
+  border-color: #362920 !important;
+}
+
+html.dark .bg-\[\#FAF8F5\],
+html.dark .bg-\[\#FAF7F2\] {
+  background-color: #17110D !important;
+  color: #F7EFE6 !important;
+}
+
+html.dark .bg-\[\#EFE7DA\],
+html.dark .bg-\[\#F5F0E6\] {
+  background-color: #271E18 !important;
+  color: #E8D8CB !important;
+}
+
+html.dark .border-\[\#E8DFC8\],
+html.dark .border-\[\#D9CDB8\],
+html.dark .border-stone-200,
+html.dark .border-stone-300,
+html.dark .border-\[\#F2ECE1\] {
+  border-color: #382B22 !important;
+}
+
+/* Typography in Night Mode */
+html.dark .text-\[\#2A1810\],
+html.dark .text-stone-900,
+html.dark .text-slate-900 {
+  color: #FDF9F5 !important;
+}
+
+html.dark .text-\[\#5C4A3A\],
+html.dark .text-\[\#735A45\],
+html.dark .text-stone-700,
+html.dark .text-stone-600 {
+  color: #D6C7BA !important;
+}
+
+html.dark .text-\[\#8C6D53\],
+html.dark .text-stone-500,
+html.dark .text-stone-400 {
+  color: #AB9A8B !important;
+}
+
+/* Form Inputs & Selects in Night Mode */
+html.dark input:not([type="checkbox"]):not([type="radio"]),
+html.dark textarea,
+html.dark select {
+  background-color: #221A14 !important;
+  border-color: #403025 !important;
+  color: #FAF5EE !important;
+}
+
+html.dark input:focus,
+html.dark textarea:focus,
+html.dark select:focus {
+  border-color: #C85A32 !important;
+}
+
+/* Badges & Tables in Night Mode */
+html.dark tr.hover\:bg-\[\#FAF8F5\]:hover {
+  background-color: #251C16 !important;
+}
+
+html.dark thead {
+  background-color: #1A130F !important;
+  border-color: #382B22 !important;
+}
+
+html.dark code {
+  background-color: #261D17 !important;
 }

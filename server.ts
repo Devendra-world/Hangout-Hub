@@ -335,7 +335,7 @@ app.post('/api/spots', async (req: Request, res: Response) => {
     const newSpot: HangoutSpot = {
       id: `spot-${Date.now()}`,
       name: body.name.trim(),
-      tagline: body.tagline ? body.tagline.trim() : 'Student verified campus hangout adda',
+      tagline: body.tagline ? body.tagline.trim() : 'Student verified campus hangout spot',
       city: body.city?.trim() || 'Ahmedabad',
       campusName: body.campusName?.trim() || 'Local College Campus',
       neighborhood: body.neighborhood.trim(),
@@ -622,9 +622,10 @@ app.all(['/api/auth', '/api/auth.php'], async (req: Request, res: Response) => {
             college: 'Ahmedabad University & CEPT Network',
             city: 'Ahmedabad',
             preferredBudget: 350,
-            favoriteVibes: ['Study & Projects', 'Budget Bite & Chill', 'Aesthetic Hangout', 'Late Night Adda'],
+            favoriteVibes: ['Study & Projects', 'Budget Bite & Chill', 'Aesthetic Hangout', 'Late Night Hangout'],
             bio: 'System Administrator & Campus Scout Lead.',
-            avatarColor: '#7C3AED'
+            avatarColor: '#7C3AED',
+            upiId: 'admin@okaxis'
           },
           token: 'hh_token_fallback_admin'
         });
@@ -640,8 +641,9 @@ app.all(['/api/auth', '/api/auth.php'], async (req: Request, res: Response) => {
           city: input.city || 'Ahmedabad',
           preferredBudget: input.preferredBudget || 180,
           favoriteVibes: input.favoriteVibes || ['Budget Bite & Chill', 'Study & Projects', 'Aesthetic Hangout'],
-          bio: input.bio || 'Design student loving budget aesthetic cafes & outdoor study addas.',
-          avatarColor: '#C85A32'
+          bio: input.bio || 'Design student loving budget aesthetic cafes & outdoor study spots.',
+          avatarColor: '#C85A32',
+          upiId: input.upiId || 'patadiyadevendra5@oksbi'
         },
         token: 'hh_token_fallback_student'
       });
@@ -664,8 +666,9 @@ app.all(['/api/profile', '/api/profile.php'], async (req: Request, res: Response
         city: 'Ahmedabad',
         preferredBudget: 180,
         favoriteVibes: ['Budget Bite & Chill', 'Study & Projects', 'Aesthetic Hangout'],
-        bio: 'Design student loving budget aesthetic cafes & outdoor study addas.',
+        bio: 'Design student loving budget aesthetic cafes & outdoor study spots.',
         avatarColor: '#C85A32',
+        upiId: 'patadiyadevendra5@oksbi',
         createdAt: '2026-10-20'
       },
       bookmarks: spots.slice(0, 3),

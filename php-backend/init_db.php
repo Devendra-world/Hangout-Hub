@@ -115,6 +115,7 @@ if ($driver === 'sqlite') {
             favorite_vibes_json TEXT,
             bio TEXT,
             avatar_color TEXT DEFAULT '#C85A32',
+            upi_id TEXT DEFAULT 'patadiyadevendra5@oksbi',
             created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
             updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
         );
@@ -138,6 +139,24 @@ if ($driver === 'sqlite') {
             UNIQUE(user_id, spot_id)
         );
     ");
+
+    // Migration for existing sqlite databases missing upi_id column
+    try {
+        $cols = $pdo->query("PRAGMA table_info(users)")->fetchAll(PDO::FETCH_ASSOC);
+        $hasUpi = false;
+        foreach ($cols as $col) {
+            if ($col['name'] === 'upi_id') {
+                $hasUpi = true;
+                break;
+            }
+        }
+        if (!$hasUpi) {
+            $pdo->exec("ALTER TABLE users ADD COLUMN upi_id TEXT DEFAULT 'patadiyadevendra5@oksbi'");
+            echo "Migrated users table: added upi_id column.\n";
+        }
+    } catch (Exception $e) {
+        // Ignored if already exists
+    }
 } else {
     // MySQL table definitions
     $pdo->exec("
@@ -153,6 +172,7 @@ if ($driver === 'sqlite') {
             `favorite_vibes_json` TEXT,
             `bio` TEXT,
             `avatar_color` VARCHAR(32) DEFAULT '#C85A32',
+            `upi_id` VARCHAR(100) DEFAULT 'patadiyadevendra5@oksbi',
             `created_at` DATETIME DEFAULT CURRENT_TIMESTAMP,
             `updated_at` DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
         ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -271,10 +291,10 @@ if ($uCount === 0) {
     echo "Seeding default users (Admin & Student)...\n";
     $insertUser = "INSERT INTO users (
         id, name, email, password_hash, role, college, city, preferred_budget,
-        favorite_vibes_json, bio, avatar_color
+        favorite_vibes_json, bio, avatar_color, upi_id
     ) VALUES (
         :id, :name, :email, :password_hash, :role, :college, :city, :preferred_budget,
-        :favorite_vibes_json, :bio, :avatar_color
+        :favorite_vibes_json, :bio, :avatar_color, :upi_id
     )";
     $stU = $pdo->prepare($insertUser);
 
@@ -288,9 +308,10 @@ if ($uCount === 0) {
         ':college' => 'Ahmedabad University & CEPT Network',
         ':city' => 'Ahmedabad',
         ':preferred_budget' => 350,
-        ':favorite_vibes_json' => json_encode(['Study & Projects', 'Budget Bite & Chill', 'Aesthetic Hangout', 'Late Night Adda']),
-        ':bio' => 'System Administrator & Campus Scout Lead. Curating honest addas for Ahmedabad students.',
-        ':avatar_color' => '#7C3AED'
+        ':favorite_vibes_json' => json_encode(['Study & Projects', 'Budget Bite & Chill', 'Aesthetic Hangout', 'Late Night Hangout']),
+        ':bio' => 'System Administrator & Campus Scout Lead. Curating honest spots for Ahmedabad students.',
+        ':avatar_color' => '#7C3AED',
+        ':upi_id' => 'admin@okaxis'
     ]);
 
     // Student account (Devendra)
@@ -305,7 +326,8 @@ if ($uCount === 0) {
         ':preferred_budget' => 180,
         ':favorite_vibes_json' => json_encode(['Budget Bite & Chill', 'Study & Projects', 'Aesthetic Hangout']),
         ':bio' => 'Design student loving budget aesthetic cafes, outdoor neem tree gardens & fast Wi-Fi for group study.',
-        ':avatar_color' => '#C85A32'
+        ':avatar_color' => '#C85A32',
+        ':upi_id' => 'patadiyadevendra5@oksbi'
     ]);
 
     echo "Default accounts created:\n";

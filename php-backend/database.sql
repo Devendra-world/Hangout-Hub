@@ -138,6 +138,7 @@ CREATE TABLE `users` (
   `favorite_vibes_json` TEXT,
   `bio` TEXT,
   `avatar_color` VARCHAR(32) DEFAULT '#C85A32',
+  `upi_id` VARCHAR(100) DEFAULT 'patadiyadevendra5@oksbi',
   `created_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;

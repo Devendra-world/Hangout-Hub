@@ -31,6 +31,7 @@ function formatUserProfile(array $row): array {
         'favoriteVibes'   => $vibes,
         'bio'             => $row['bio'] ?? '',
         'avatarColor'     => $row['avatar_color'] ?? '#C85A32',
+        'upiId'           => $row['upi_id'] ?? 'patadiyadevendra5@oksbi',
         'createdAt'       => $row['created_at'] ?? date('Y-m-d')
     ];
 }
@@ -143,6 +144,9 @@ if ($method === 'POST') {
     $budget = isset($input['preferredBudget']) ? (int)$input['preferredBudget'] : (int)$existing['preferred_budget'];
     $bio = isset($input['bio']) ? trim($input['bio']) : $existing['bio'];
     $avatarColor = $input['avatarColor'] ?? $existing['avatar_color'];
+    $upiId = isset($input['upiId']) && trim($input['upiId']) !== ''
+        ? trim($input['upiId'])
+        : ($existing['upi_id'] ?? 'patadiyadevendra5@oksbi');
 
     $vibesJson = $existing['favorite_vibes_json'];
     if (isset($input['favoriteVibes']) && is_array($input['favoriteVibes'])) {
@@ -158,6 +162,7 @@ if ($method === 'POST') {
         ':vibes' => $vibesJson,
         ':bio' => $bio,
         ':avatar_color' => $avatarColor,
+        ':upi_id' => $upiId,
         ':id' => $userId
     ];
 
@@ -173,7 +178,8 @@ if ($method === 'POST') {
         preferred_budget = :preferred_budget,
         favorite_vibes_json = :vibes,
         bio = :bio,
-        avatar_color = :avatar_color
+        avatar_color = :avatar_color,
+        upi_id = :upi_id
         {$passwordClause},
         updated_at = CURRENT_TIMESTAMP
         WHERE id = :id";

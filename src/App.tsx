@@ -32,7 +32,8 @@ const DEFAULT_USER: UserProfile = {
   preferredBudget: 180,
   favoriteVibes: ['Budget Bite & Chill', 'Study & Projects', 'Aesthetic Hangout'],
   bio: 'Design student loving budget aesthetic cafes, outdoor neem tree shade & fast Wi-Fi for group study.',
-  avatarColor: '#C85A32'
+  avatarColor: '#C85A32',
+  upiId: 'patadiyadevendra5@oksbi'
 };
 
 export default function App() {
@@ -71,6 +72,29 @@ export default function App() {
     frustrations: {},
     priorities: {}
   });
+
+  // Night Mode state
+  const [isNightMode, setIsNightMode] = useState<boolean>(() => {
+    try {
+      const stored = localStorage.getItem('hangout_hub_night_mode');
+      return stored !== null ? stored === 'true' : false;
+    } catch {
+      return false;
+    }
+  });
+
+  useEffect(() => {
+    try {
+      if (isNightMode) {
+        document.documentElement.classList.add('dark');
+      } else {
+        document.documentElement.classList.remove('dark');
+      }
+      localStorage.setItem('hangout_hub_night_mode', String(isNightMode));
+    } catch (e) {
+      console.warn('Could not persist theme:', e);
+    }
+  }, [isNightMode]);
 
   // Sync user to localStorage
   useEffect(() => {
@@ -218,7 +242,7 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-[#FAF8F5] text-stone-900 selection:bg-amber-100 selection:text-amber-900 font-sans">
+    <div className="min-h-screen flex flex-col bg-[#FAF8F5] text-stone-900 selection:bg-amber-100 selection:text-amber-900 font-sans transition-colors duration-200">
       
       {/* Navigation Top Bar */}
       <Navbar
@@ -234,6 +258,8 @@ export default function App() {
         onOpenAuth={() => setIsAuthModalOpen(true)}
         onOpenProfile={() => setIsProfileModalOpen(true)}
         onOpenQrGenerator={() => handleOpenQrForSpot()}
+        isNightMode={isNightMode}
+        onToggleNightMode={() => setIsNightMode((prev) => !prev)}
       />
 
       {/* Main Content Sections */}
@@ -286,7 +312,7 @@ export default function App() {
         )}
 
         {activeTab === 'splitter' && (
-          <GroupBillSplitter />
+          <GroupBillSplitter currentUser={user} />
         )}
 
         {activeTab === 'feedback' && (
@@ -299,7 +325,7 @@ export default function App() {
         )}
       </main>
 
-      {/* Spot Detail Modal with QR & Save Adda */}
+      {/* Spot Detail Modal with QR & Save Spot */}
       <SpotDetailModal
         spot={selectedSpot}
         onClose={() => setSelectedSpot(null)}
@@ -339,7 +365,7 @@ export default function App() {
         }}
       />
 
-      {/* User Profile, Saved Addas & History Modal */}
+      {/* User Profile, Saved Spots & History Modal */}
       <ProfileModal
         isOpen={isProfileModalOpen}
         onClose={() => setIsProfileModalOpen(false)}
@@ -359,6 +385,7 @@ export default function App() {
         }}
         spot={qrSpotTarget}
         spots={spots}
+        user={user}
       />
 
       {/* Footer */}

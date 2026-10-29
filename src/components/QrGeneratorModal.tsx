@@ -5,21 +5,23 @@
 
 import React, { useState, useEffect } from 'react';
 import QRCode from 'qrcode';
-import { X, QrCode, Download, Copy, Check, MapPin, IndianRupee, Share2, Sparkles, Coffee, Globe, ExternalLink } from 'lucide-react';
-import { HangoutSpot } from '../types/index.ts';
+import { X, QrCode, Download, Copy, Check, MapPin, IndianRupee, Share2, Sparkles, Coffee, Globe, ExternalLink, CheckCircle2 } from 'lucide-react';
+import { HangoutSpot, UserProfile } from '../types/index.ts';
 
 interface QrGeneratorModalProps {
   isOpen: boolean;
   onClose: () => void;
   spot?: HangoutSpot | null;
   spots?: HangoutSpot[];
+  user?: UserProfile | null;
 }
 
 export const QrGeneratorModal: React.FC<QrGeneratorModalProps> = ({
   isOpen,
   onClose,
   spot: initialSpot,
-  spots = []
+  spots = [],
+  user
 }) => {
   const [mode, setMode] = useState<'spot' | 'upi' | 'custom'>('spot');
   const [selectedSpotId, setSelectedSpotId] = useState<string>('');
@@ -30,11 +32,19 @@ export const QrGeneratorModal: React.FC<QrGeneratorModalProps> = ({
   // Hosting Domain configuration (defaulted to user's domain devendra.xo.je)
   const [websiteDomain, setWebsiteDomain] = useState<string>('https://devendra.xo.je');
 
-  // UPI Split QR states
-  const [upiId, setUpiId] = useState('patadiya.devendra@okaxis');
-  const [payeeName, setPayeeName] = useState('Devendra Patadiya');
+  // UPI Split QR states (initialized from active logged in user profile)
+  const [upiId, setUpiId] = useState(user?.upiId || 'patadiyadevendra5@oksbi');
+  const [payeeName, setPayeeName] = useState(user?.name || 'Devendra Patadiya');
   const [splitAmount, setSplitAmount] = useState('180');
   const [splitNote, setSplitNote] = useState('Hangout Cafe Bill Split');
+
+  // Sync when user changes
+  useEffect(() => {
+    if (user) {
+      if (user.upiId) setUpiId(user.upiId);
+      if (user.name) setPayeeName(user.name);
+    }
+  }, [user]);
 
   // Custom QR states
   const [customText, setCustomText] = useState('https://chat.whatsapp.com/squad-hangout-hub');
@@ -71,11 +81,12 @@ export const QrGeneratorModal: React.FC<QrGeneratorModalProps> = ({
         )}`;
       }
     } else if (mode === 'upi') {
-      const cleanUpi = upiId.trim();
+      const cleanUpi = upiId.trim().replace(/\s+/g, '');
       const cleanName = payeeName.trim() || 'Student';
       const cleanAmt = splitAmount.trim() || '0';
       const cleanNote = splitNote.trim() || 'Hangout-Hub bill split';
-      payload = `upi://pay?pa=${encodeURIComponent(cleanUpi)}&pn=${encodeURIComponent(cleanName)}&am=${encodeURIComponent(cleanAmt)}&cu=INR&tn=${encodeURIComponent(cleanNote)}`;
+      // NPCI Standard format: raw @ in pa ensures mobile cameras & UPI apps parse properly
+      payload = `upi://pay?pa=${cleanUpi}&pn=${encodeURIComponent(cleanName)}&am=${cleanAmt}&cu=INR&tn=${encodeURIComponent(cleanNote)}`;
     } else {
       payload = customText.trim() || 'https://devendra.xo.je';
     }
@@ -327,14 +338,19 @@ export const QrGeneratorModal: React.FC<QrGeneratorModalProps> = ({
             <div className="space-y-3 bg-[#EFE7DA]/50 p-4 rounded-2xl border border-[#E8DFC8]">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-xs font-bold text-[#2A1810] mb-1">
-                    Your UPI ID (VPA)
+                  <label className="block text-xs font-bold text-[#2A1810] mb-1 flex items-center justify-between">
+                    <span>Your UPI ID (VPA)</span>
+                    {user && (
+                      <span className="text-[10px] text-[#059669] font-bold">
+                        Linked to {user.name}’s Profile
+                      </span>
+                    )}
                   </label>
                   <input
                     type="text"
                     value={upiId}
                     onChange={(e) => setUpiId(e.target.value)}
-                    placeholder="e.g. patadiya.devendra@okaxis"
+                    placeholder="e.g. patadiyadevendra5@oksbi"
                     className="w-full px-3 py-2 text-xs bg-white border border-[#D9CDB8] rounded-xl focus:outline-none focus:ring-1 focus:ring-[#C85A32]"
                   />
                 </div>
@@ -378,9 +394,21 @@ export const QrGeneratorModal: React.FC<QrGeneratorModalProps> = ({
                   />
                 </div>
               </div>
-              <p className="text-[10px] text-[#8C6D53]">
-                💡 Show this QR on your phone screen after paying the bill so friends can scan and pay their exact share with GPay or PhonePe.
-              </p>
+
+              <div className="flex items-center justify-between pt-1 gap-2 flex-wrap">
+                <div className="flex items-center gap-1.5 text-[11px] text-[#059669] font-bold">
+                  <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
+                  <span>NPCI Scannable: GPay, PhonePe, Paytm, BHIM</span>
+                </div>
+
+                <a
+                  href={currentPayload}
+                  className="flex items-center gap-1 text-[11px] font-bold text-[#059669] hover:underline"
+                >
+                  <ExternalLink className="w-3.5 h-3.5" />
+                  <span>Open in UPI App</span>
+                </a>
+              </div>
             </div>
           )}
 

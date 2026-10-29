@@ -134,6 +134,8 @@ export interface UserProfile {
   favoriteVibes: string[];
   bio: string;
   avatarColor: string;
+  upiId?: string;
+  paymentQrNote?: string;
   createdAt?: string;
 }
 
