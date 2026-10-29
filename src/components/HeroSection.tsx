@@ -43,18 +43,16 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
                 <MapPin className="w-3.5 h-3.5 text-amber-700" />
                 Universal Student Hangout Network
               </span>
-              <span aria-hidden="true">·</span>
-              <span>Ahmedabad · Gandhinagar · Delhi NCR · Bengaluru · Mumbai · Pune</span>
             </div>
 
             {/* Headline with balanced wrap */}
-            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-stone-900 tracking-tight leading-[1.14] font-heading" style={{ textWrap: 'balance' }}>
+            <h1 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-stone-900 tracking-tight leading-[1.18] font-heading" style={{ textWrap: 'balance' }}>
               Real per-head bills. True group seating. For every student campus.
             </h1>
 
-            {/* Subtitle */}
-            <p className="text-base sm:text-lg text-stone-600 leading-relaxed max-w-2xl font-body">
-              Finding a hangout spot for your college squad shouldn't mean guessing if 8 people can sit together or getting shocked by unexpected taxes. Hangout-Hub gives you <strong className="text-stone-900 font-bold">real per-person math</strong>, <strong className="text-stone-900 font-bold">guaranteed group table capacities</strong>, <strong className="text-stone-900 font-bold">verified WiFi</strong>, and <strong className="text-stone-900 font-bold">unedited Instagram reel reality checks</strong> for campuses nationwide.
+            {/* Subtitle - Mid small font size */}
+            <p className="text-xs sm:text-sm text-stone-600 leading-relaxed max-w-2xl font-body">
+              Verified per-person splits, guaranteed group tables for 6–20+ friends, tested high-speed WiFi, and unedited Instagram reel reality checks — audited in person by student campus scouts.
             </p>
 
             {/* CTAs */}

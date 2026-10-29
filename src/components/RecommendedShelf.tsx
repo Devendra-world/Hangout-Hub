@@ -67,11 +67,11 @@ export const RecommendedShelf: React.FC<RecommendedShelfProps> = ({
               ? `Recommended According to Your History & ₹${user.preferredBudget} Budget`
               : 'Top Scored Campus Spots & Group Cafes'}
           </h3>
-          <p className="text-xs text-[#8C6D53]">
-            {user
-              ? `Scored from your past viewed spots, favorite vibes (${(user.favoriteVibes || []).join(', ')}), and ground audits.`
-              : 'Sign in to let Hangout-Hub personalize spots based on your college, squad size, and past visits.'}
-          </p>
+          {!user && (
+            <p className="text-xs text-[#8C6D53]">
+              Sign in to let Hangout-Hub personalize spots based on your college, squad size, and past visits.
+            </p>
+          )}
         </div>
 
         {!user && (

@@ -56,7 +56,8 @@ export const CafeDealsSection: React.FC<CafeDealsSectionProps> = ({
           return (
             <div
               key={spot.id}
-              className="bg-white rounded-3xl border border-stone-200/90 overflow-hidden shadow-xs hover:border-amber-400 hover:shadow-xl transition-all duration-200 flex flex-col justify-between"
+              onClick={() => onSelectSpot(spot)}
+              className="bg-white rounded-3xl border border-stone-200/90 overflow-hidden shadow-xs hover:border-amber-400 hover:shadow-xl transition-all duration-200 flex flex-col justify-between cursor-pointer group"
             >
               <div>
                 <AestheticCafeVisual spot={spot} size="card" />
@@ -71,27 +72,27 @@ export const CafeDealsSection: React.FC<CafeDealsSectionProps> = ({
                   </div>
 
                   <div>
-                    <h3 className="text-lg font-bold text-stone-900">{spot.name}</h3>
-                    <p className="text-xs text-stone-600 line-clamp-1 mt-0.5">{spot.tagline}</p>
+                    <h3 className="text-lg font-bold text-stone-900 group-hover:text-amber-800 transition-colors">{spot.name}</h3>
+                    <div className="text-[11px] font-medium text-amber-800">{spot.vibeCategory}</div>
                   </div>
 
-                  {/* Deal Box */}
-                  <div className="bg-emerald-50 rounded-2xl p-3.5 border border-emerald-200 text-xs space-y-1.5">
+                  {/* Deal Box - Clean & compact */}
+                  <div className="bg-emerald-50 rounded-2xl p-3 border border-emerald-200/80 text-xs space-y-1">
                     <div className="flex items-center gap-1.5 font-bold text-emerald-950">
                       <Sparkles className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
                       <span>{offerTitle}</span>
                     </div>
-                    <p className="text-emerald-800 leading-relaxed text-[11px]">
+                    <p className="text-emerald-800 text-[11px] leading-tight line-clamp-2">
                       {offerDetails}
                     </p>
                   </div>
 
                   <div className="grid grid-cols-2 gap-2 text-[11px] text-stone-600 pt-1">
-                    <div className="bg-stone-50 p-2 rounded-xl">
+                    <div className="bg-stone-50 p-2 rounded-xl border border-stone-100">
                       <span className="text-stone-400">Avg Spend: </span>
                       <strong className="text-stone-800 tabular-nums">₹{spot.realPerPersonCost.avg}/head</strong>
                     </div>
-                    <div className="bg-stone-50 p-2 rounded-xl">
+                    <div className="bg-stone-50 p-2 rounded-xl border border-stone-100">
                       <span className="text-stone-400">Seats Together: </span>
                       <strong className="text-stone-800 tabular-nums">Up to {spot.groupSeating.maxGroupSize}</strong>
                     </div>
@@ -102,16 +103,13 @@ export const CafeDealsSection: React.FC<CafeDealsSectionProps> = ({
               <div className="p-4 bg-stone-50/80 border-t border-stone-100 flex items-center justify-between text-xs">
                 <span className="text-emerald-700 font-bold flex items-center gap-1">
                   <CheckCircle2 className="w-3.5 h-3.5" />
-                  <span>Campus Verified</span>
+                  <span>Verified Partner</span>
                 </span>
 
-                <button
-                  onClick={() => onSelectSpot(spot)}
-                  className="font-bold text-stone-900 hover:text-amber-700 transition-colors flex items-center gap-1 cursor-pointer"
-                >
-                  <span>View Details</span>
-                  <ArrowRight className="w-3.5 h-3.5" />
-                </button>
+                <span className="font-bold text-stone-900 group-hover:text-amber-700 transition-colors flex items-center gap-1">
+                  <span>Full Cafe Info</span>
+                  <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
+                </span>
               </div>
             </div>
           );

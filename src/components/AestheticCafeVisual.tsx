@@ -329,32 +329,41 @@ export const AestheticCafeVisual: React.FC<AestheticCafeVisualProps> = ({ spot, 
         </div>
       </div>
 
-      {/* Bottom Title & Tagline in Soft Typography */}
-      <div className="relative z-10 space-y-1">
-        <div className="flex items-center gap-2 text-[11px]">
-          <span className="font-bold text-amber-300 tracking-wider uppercase font-heading">
+      {/* For modal: show Title & Tagline in banner */}
+      {size === 'modal' ? (
+        <>
+          <div className="relative z-10 space-y-1">
+            <div className="flex items-center gap-2 text-[11px]">
+              <span className="font-bold text-amber-300 tracking-wider uppercase font-heading">
+                {spot.vibeCategory}
+              </span>
+              <span className="text-white/40">·</span>
+              <span className="text-white/90 font-medium truncate max-w-[220px]">
+                {spot.city ? `${spot.neighborhood}, ${spot.city}` : spot.neighborhood}
+              </span>
+            </div>
+
+            <h3 className="text-xl sm:text-2xl font-extrabold tracking-tight text-white drop-shadow-md font-heading line-clamp-1">
+              {spot.name}
+            </h3>
+
+            <p className="text-xs text-stone-200/90 line-clamp-1 font-medium">
+              {spot.tagline}
+            </p>
+          </div>
+
+          {spot.reelRealityCheck.hasReel && (
+            <div className="absolute right-4 bottom-4 z-10 hidden sm:flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-black/60 backdrop-blur-md border border-white/15 text-[10px] font-semibold text-white/90">
+              <Film className="w-3 h-3 text-amber-400" />
+              <span>{spot.reelRealityCheck.realityScore}% Truth</span>
+            </div>
+          )}
+        </>
+      ) : (
+        <div className="relative z-10 flex items-center justify-between">
+          <span className="text-[10px] font-bold text-amber-200 tracking-wider uppercase bg-black/45 backdrop-blur-xs px-2.5 py-0.5 rounded-full border border-white/10">
             {spot.vibeCategory}
           </span>
-          <span className="text-white/40">·</span>
-          <span className="text-white/90 font-medium truncate max-w-[220px]">
-            {spot.city ? `${spot.neighborhood}, ${spot.city}` : spot.neighborhood}
-          </span>
-        </div>
-
-        <h3 className="text-xl sm:text-2xl font-extrabold tracking-tight text-white drop-shadow-md font-heading line-clamp-1">
-          {spot.name}
-        </h3>
-
-        <p className="text-xs text-stone-200/90 line-clamp-1 font-medium">
-          {spot.tagline}
-        </p>
-      </div>
-
-      {/* Reel Status indicator on corner */}
-      {spot.reelRealityCheck.hasReel && (
-        <div className="absolute right-4 bottom-4 z-10 hidden sm:flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-black/60 backdrop-blur-md border border-white/15 text-[10px] font-semibold text-white/90">
-          <Film className="w-3 h-3 text-amber-400" />
-          <span>{spot.reelRealityCheck.realityScore}% Truth</span>
         </div>
       )}
 

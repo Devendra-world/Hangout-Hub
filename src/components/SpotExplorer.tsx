@@ -346,12 +346,6 @@ export const SpotExplorer: React.FC<SpotExplorerProps> = ({
               ? 'Campus Cafes & Student Hangouts Nationwide'
               : `Famous ${selectedCity} Hangouts & Student Cafes`}
           </h2>
-
-          <p className="text-sm text-stone-600 mt-1 max-w-2xl font-body">
-            {selectedCity === 'all'
-              ? 'From CEPT & HL in Ahmedabad to DU North Campus, Christ in Bengaluru, Mithibai in Mumbai & FC Road in Pune — audited with real per-head bills and true group seating.'
-              : `Verified student spots in ${selectedCity} with guaranteed squad table capacities, tested WiFi speeds, and unedited reel reality checks.`}
-          </p>
         </div>
 
         <div className="flex items-center gap-3">

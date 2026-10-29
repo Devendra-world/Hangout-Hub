@@ -127,9 +127,6 @@ export const Footer: React.FC<FooterProps> = ({
             <div className="font-bold text-[#2A1810] uppercase tracking-wider text-[11px] font-brand">
               Campus Scouts & Cafe Owners
             </div>
-            <p className="text-[#5C4A3A] text-xs leading-relaxed font-medium">
-              Know an unlisted student hangout near your campus? Or manage a cafe near CEPT, HL, JG, Vastrapur, or on Sindhu Bhavan Road?
-            </p>
             <div className="flex flex-wrap gap-2 pt-1">
               <button
                 onClick={onOpenSubmitSpot}
