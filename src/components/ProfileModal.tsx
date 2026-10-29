@@ -59,7 +59,7 @@ export const ProfileModal: React.FC<ProfileModalProps> = ({
   const [confirmPassword, setConfirmPassword] = useState('');
   const [showPasswordSection, setShowPasswordSection] = useState(false);
 
-  // Remote data fetched from /api/profile
+  // Remote data fetched from profile.php
   const [bookmarks, setBookmarks] = useState<HangoutSpot[]>([]);
   const [history, setHistory] = useState<UserActivityItem[]>([]);
   const [recommendations, setRecommendations] = useState<RecommendationItem[]>([]);
@@ -104,8 +104,8 @@ export const ProfileModal: React.FC<ProfileModalProps> = ({
     setDataLoading(true);
     try {
       const [profRes, recRes] = await Promise.all([
-        fetch(`/api/profile?user_id=${userId}`),
-        fetch(`/api/recommendations?user_id=${userId}`)
+        fetch(`/profile.php?user_id=${userId}`),
+        fetch(`/recommendations.php?user_id=${userId}`)
       ]);
 
       const profData = await profRes.json();
@@ -165,7 +165,7 @@ export const ProfileModal: React.FC<ProfileModalProps> = ({
     }
 
     try {
-      const res = await fetch('/api/profile', {
+      const res = await fetch('/profile.php', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(updatedData)
@@ -217,7 +217,7 @@ export const ProfileModal: React.FC<ProfileModalProps> = ({
     e.stopPropagation();
     setBookmarks((prev) => prev.filter((s) => s.id !== spotId));
     try {
-      await fetch('/api/history', {
+      await fetch('/history.php', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ user_id: user.id, spot_id: spotId, action_type: 'unsaved' })

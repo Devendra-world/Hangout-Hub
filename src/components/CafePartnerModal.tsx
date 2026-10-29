@@ -47,7 +47,7 @@ export const CafePartnerModal: React.FC<CafePartnerModalProps> = ({ isOpen, onCl
     };
 
     try {
-      const res = await fetch('/api/partnerships', {
+      const res = await fetch('/partnerships.php', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload)

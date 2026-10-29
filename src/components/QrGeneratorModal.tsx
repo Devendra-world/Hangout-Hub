@@ -76,7 +76,7 @@ export const QrGeneratorModal: React.FC<QrGeneratorModalProps> = ({
         const cleanBase = websiteDomain.trim().replace(/\/+$/, '') || 'https://devendra.xo.je';
         payload = `${cleanBase}/#spot-${activeSpot.id}`;
       } else {
-        payload = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
+        payload = `https://maps.google.com/?q=${encodeURIComponent(
           activeSpot.name + ' ' + (activeSpot.neighborhood || '') + ' ' + (activeSpot.city || 'Ahmedabad')
         )}`;
       }

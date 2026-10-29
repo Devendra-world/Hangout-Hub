@@ -77,7 +77,7 @@ export const SubmitSpotModal: React.FC<SubmitSpotModalProps> = ({ isOpen, onClos
     };
 
     try {
-      const res = await fetch('/api/spots', {
+      const res = await fetch('/spots.php', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload)

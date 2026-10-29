@@ -30,7 +30,7 @@ export const RecommendedShelf: React.FC<RecommendedShelfProps> = ({
   const fetchRecommendations = async () => {
     setLoading(true);
     try {
-      const url = user?.id ? `/api/recommendations?user_id=${user.id}` : '/api/recommendations';
+      const url = user?.id ? `/recommendations.php?user_id=${user.id}` : '/recommendations.php';
       const res = await fetch(url);
       const data = await res.json();
       if (data.success && Array.isArray(data.recommendations)) {

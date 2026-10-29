@@ -82,7 +82,7 @@ export const PhpDatabaseModal: React.FC<PhpDatabaseModalProps> = ({ isOpen, onCl
   const fetchBackendInfo = async () => {
     setLoading(true);
     try {
-      const res = await fetch('/api/backend-info');
+      const res = await fetch('/info.php');
       const data = await res.json();
       setBackendInfo(data);
     } catch (err) {
@@ -95,7 +95,7 @@ export const PhpDatabaseModal: React.FC<PhpDatabaseModalProps> = ({ isOpen, onCl
   const fetchTableData = async (tbl: TableName) => {
     setTableLoading(true);
     try {
-      const res = await fetch(`/api/admin/crud?table=${tbl}`);
+      const res = await fetch(`/admin_crud.php?table=${tbl}`);
       const data = await res.json();
       if (data.success && Array.isArray(data.rows)) {
         setTableRows(data.rows);
@@ -111,7 +111,7 @@ export const PhpDatabaseModal: React.FC<PhpDatabaseModalProps> = ({ isOpen, onCl
   };
 
   const handleDownloadSql = () => {
-    window.location.href = '/api/database/download';
+    window.location.href = '/export_sql.php';
   };
 
   const showNotification = (msg: string) => {
@@ -180,7 +180,7 @@ export const PhpDatabaseModal: React.FC<PhpDatabaseModalProps> = ({ isOpen, onCl
     e.preventDefault();
     try {
       if (isAddingNew) {
-        const res = await fetch('/api/admin/crud', {
+        const res = await fetch('/admin_crud.php', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
@@ -200,7 +200,7 @@ export const PhpDatabaseModal: React.FC<PhpDatabaseModalProps> = ({ isOpen, onCl
           showNotification(`Error: ${d.error || 'Failed to add record'}`);
         }
       } else if (editingRow) {
-        const res = await fetch('/api/admin/crud', {
+        const res = await fetch('/admin_crud.php', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
@@ -228,7 +228,7 @@ export const PhpDatabaseModal: React.FC<PhpDatabaseModalProps> = ({ isOpen, onCl
   // Delete Row
   const handleDeleteRow = async (id: string) => {
     try {
-      const res = await fetch('/api/admin/crud', {
+      const res = await fetch('/admin_crud.php', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -474,7 +474,7 @@ class Database {
             }`}
           >
             <Terminal className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#D97706]" />
-            <span>PHP API Source</span>
+            <span>PHP Database Scripts</span>
           </button>
 
           <button
@@ -821,7 +821,7 @@ class Database {
             </div>
           )}
 
-          {/* TAB 4: PHP API SOURCE */}
+          {/* TAB 4: PHP DATABASE SCRIPTS */}
           {activeTab === 'endpoints' && (
             <div className="space-y-4">
               <div className="flex items-center gap-2">
@@ -833,7 +833,7 @@ class Database {
                       : 'bg-white text-[#5C4A3A] border border-[#E8DFC8] hover:bg-[#EFE7DA]'
                   }`}
                 >
-                  api/spots.php
+                  spots.php
                 </button>
                 <button
                   onClick={() => setActiveEndpointCode('db')}

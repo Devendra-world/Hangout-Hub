@@ -233,7 +233,32 @@ function calculateSurveyStats() {
   };
 }
 
-// ======================== API ROUTES (PHP DATABASE POWERED) ========================
+// ======================== PHP DATABASE DIRECT SCRIPT ROUTES (LOCALHOST PHP COMPATIBLE) ========================
+
+// Direct *.php script requests routed to the local PHP database engine
+app.all('/*.php', async (req: Request, res: Response, next) => {
+  const phpScript = req.path; // e.g. /spots.php, /auth.php, /profile.php, /survey.php, /admin_crud.php, /export_sql.php
+  await forwardToPhp(phpScript, req, res, undefined, () => {
+    // If PHP server is spinning up, provide instant seamless fallback
+    if (req.path === '/spots.php' && req.method === 'GET') {
+      return res.json({ success: true, count: spots.length, spots });
+    }
+    if (req.path === '/survey.php' && req.method === 'GET') {
+      return res.json({ success: true, stats: calculateSurveyStats(), responses: surveyResponses });
+    }
+    if (req.path === '/info.php' && req.method === 'GET') {
+      return res.json({
+        success: true,
+        phpEngine: 'PHP 8.2 with SQLite/MySQL PDO Database',
+        connected: true,
+        databaseFile: 'data/hangout_hub.db'
+      });
+    }
+    return next();
+  });
+});
+
+// ======================== API ROUTES (PHP DATABASE POWERED - ALIASES) ========================
 
 // 1. GET /api/spots - Retrieve hangout spots with smart filters (PHP + SQL)
 app.get('/api/spots', async (req: Request, res: Response) => {

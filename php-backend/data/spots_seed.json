@@ -48,7 +48,7 @@
     "scoutReview": {
       "scoutName": "Kavya & Harsh (CEPT Architecture & AU)",
       "scoutCollege": "CEPT University Campus Scout",
-      "scoutNotes": "The ultimate student adda in Ahmedabad. We spend 3 hours here discussing studio jury projects. Staff never pushes you to re-order.",
+      "scoutNotes": "The ultimate student hangout in Ahmedabad. We spend 3 hours here discussing studio jury projects. Staff never pushes you to re-order.",
       "verifiedDate": "Oct 2026",
       "upvotes": 312
     },
@@ -57,7 +57,7 @@
       "Open Air Neem Shade",
       "Architectural Icon",
       "Under ₹200",
-      "Creative Adda"
+      "Creative Hub"
     ],
     "visualTheme": {
       "primaryColor": "#78350F",
@@ -72,7 +72,7 @@
   },
   {
     "id": "spot-shambhu-hl",
-    "name": "Shambhu's Coffee Bar (HL Adda)",
+    "name": "Shambhu's Coffee Bar (HL Six Roads Hub)",
     "tagline": "The undisputed legendary campus institution for frothy thick cold coffee, grilled puffs & midnight chai",
     "city": "Ahmedabad",
     "campusName": "HL Commerce & St. Xavier’s",
@@ -92,7 +92,7 @@
       "pushTogetherAllowed": true,
       "boothCount": 0,
       "reservationNeeded": false,
-      "reservationTip": "Never needs reservation. Peak crowd arrives at 11 AM (post-class) and 9:30 PM (night adda)."
+      "reservationTip": "Never needs reservation. Peak crowd arrives at 11 AM (post-class) and 9:30 PM (night hangout)."
     },
     "amenities": {
       "wifiSpeedMbps": 20,
@@ -128,7 +128,7 @@
       "HL College Classic",
       "Late Night to 1:30 AM",
       "Cold Coffee",
-      "Mass Group Adda"
+      "Mass Group Hangout"
     ],
     "visualTheme": {
       "primaryColor": "#B45309",
@@ -352,7 +352,7 @@
     "campusName": "Bodakdev & SBR",
     "neighborhood": "Bodakdev",
     "distanceToCampus": "2.8 km (12 min transit from Vastrapur)",
-    "vibeCategory": "Late Night Adda",
+    "vibeCategory": "Late Night Hangout",
     "realPerPersonCost": {
       "min": 280,
       "max": 460,
@@ -549,8 +549,8 @@
   },
   {
     "id": "spot-gnr-teapost",
-    "name": "Tea Post & Adda Benches",
-    "tagline": "Massive open-air garden adda right outside PDPU & GNLU gates with ₹40 ginger pudina chai & bun maska",
+    "name": "Tea Post & Campus Benches",
+    "tagline": "Massive open-air garden hangout right outside PDPU & GNLU gates with ₹40 ginger pudina chai & bun maska",
     "city": "Gandhinagar",
     "campusName": "PDPU, GNLU & DA-IICT",
     "neighborhood": "Raysan / Bhaijipura",
@@ -587,16 +587,16 @@
     },
     "reelRealityCheck": {
       "hasReel": true,
-      "reelUrl": "https://instagram.com/reel/pdpu-tea-adda",
+      "reelUrl": "https://instagram.com/reel/pdpu-tea-hangout",
       "reelCreator": "@gandhinagar_diaries",
       "reelHypeClaim": "Fairytale garden chai lounge with gourmet snacks!",
-      "groundRealityTruth": "It is a friendly, relaxed campus garden adda with endless seating. Perfect for evening de-stress sessions with 15 hostel mates without spending over ₹80 each.",
+      "groundRealityTruth": "It is a friendly, relaxed campus garden hangout with endless seating. Perfect for evening de-stress sessions with 15 hostel mates without spending over ₹80 each.",
       "realityScore": 92
     },
     "scoutReview": {
       "scoutName": "Siddharth & Megha (PDPU Energy Studies)",
       "scoutCollege": "PDPU Gandhinagar Scout",
-      "scoutNotes": "The go-to adda after 5 PM lectures. Never spent more than ₹80 each even after two cups of chai and hot samosas.",
+      "scoutNotes": "The go-to hangout after 5 PM lectures. Never spent more than ₹80 each even after two cups of chai and hot samosas.",
       "verifiedDate": "Oct 2026",
       "upvotes": 245
     },
@@ -682,7 +682,7 @@
   },
   {
     "id": "spot-delhi-tomuncle",
-    "name": "Tom Uncle's Maggi Point & Adda",
+    "name": "Tom Uncle's Maggi Point & Hub",
     "tagline": "Legendary DU North Campus outdoor benches with 50+ varieties of masala maggi & cold coffee",
     "city": "Delhi NCR",
     "campusName": "DU North Campus (Hindu & Miranda)",
@@ -729,7 +729,7 @@
     "scoutReview": {
       "scoutName": "Priya & Varun (Miranda & Hindu College)",
       "scoutCollege": "Delhi University Scout Network",
-      "scoutNotes": "The sacred adda of North Campus. Everyone from freshers to alumni gathers here.",
+      "scoutNotes": "The sacred hangout of North Campus. Everyone from freshers to alumni gathers here.",
       "verifiedDate": "Oct 2026",
       "upvotes": 380
     },
@@ -738,7 +738,7 @@
       "DU North Campus",
       "Under ₹100",
       "Mass Group",
-      "Iconic Adda"
+      "Iconic Hub"
     ],
     "visualTheme": {
       "primaryColor": "#B45309",
@@ -870,7 +870,7 @@
       "FC Road",
       "Fergusson College",
       "Under ₹100",
-      "Heritage Adda"
+      "Heritage Hub"
     ],
     "visualTheme": {
       "primaryColor": "#78350F",
@@ -927,7 +927,7 @@
     "scoutReview": {
       "scoutName": "Rhea & Dev (Mithibai BMM)",
       "scoutCollege": "Mithibai College Scout",
-      "scoutNotes": "The legendary Juhu college adda. Our whole college festival committee holds briefings here.",
+      "scoutNotes": "The legendary Juhu college hangout. Our whole college festival committee holds briefings here.",
       "verifiedDate": "Oct 2026",
       "upvotes": 420
     },

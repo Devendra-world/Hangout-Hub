@@ -82,7 +82,7 @@ export const StudentFeedbackSection: React.FC<StudentFeedbackSectionProps> = ({
     };
 
     try {
-      const res = await fetch('/api/survey', {
+      const res = await fetch('/survey.php', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload)

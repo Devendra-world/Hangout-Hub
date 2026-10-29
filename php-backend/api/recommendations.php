@@ -2,7 +2,7 @@
 /**
  * Hangout-Hub Recommendations Engine (PHP + SQL)
  * Delivers personalized spot recommendations scored according to user's browsing history,
- * saved addas, budget preferences, and campus location.
+ * saved hangouts, budget preferences, and campus location.
  */
 
 require_once __DIR__ . '/../config/db.php';

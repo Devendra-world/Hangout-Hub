@@ -109,9 +109,9 @@ export default function App() {
     }
   }, [user]);
 
-  // Fetch initial spots & survey from backend API
+  // Fetch initial spots & survey from PHP database backend
   useEffect(() => {
-    fetch('/api/spots')
+    fetch('/spots.php')
       .then((res) => res.json())
       .then((data) => {
         if (data.success && Array.isArray(data.spots) && data.spots.length > 0) {
@@ -120,7 +120,7 @@ export default function App() {
       })
       .catch((err) => console.log('Using initial seed spots:', err));
 
-    fetch('/api/survey')
+    fetch('/survey.php')
       .then((res) => res.json())
       .then((data) => {
         if (data.success && data.responses) {
@@ -131,10 +131,10 @@ export default function App() {
       .catch((err) => console.log('Using initial seed survey:', err));
   }, []);
 
-  // Fetch user bookmarks from backend if user is logged in
+  // Fetch user bookmarks from PHP database if user is logged in
   useEffect(() => {
     if (user?.id) {
-      fetch(`/api/profile?user_id=${user.id}`)
+      fetch(`/profile.php?user_id=${user.id}`)
         .then((res) => res.json())
         .then((data) => {
           if (data.success && Array.isArray(data.bookmarks)) {
@@ -145,13 +145,13 @@ export default function App() {
     }
   }, [user?.id]);
 
-  // Handle spot selection & record view in history
+  // Handle spot selection & record view in database history
   const handleSelectSpot = (spot: HangoutSpot) => {
     setSelectedSpot(spot);
 
     // Record view in SQL history for recommendations engine
     if (user?.id) {
-      fetch('/api/history', {
+      fetch('/history.php', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -178,7 +178,7 @@ export default function App() {
       isAlreadySaved ? prev.filter((id) => id !== spot.id) : [...prev, spot.id]
     );
 
-    fetch('/api/history', {
+    fetch('/history.php', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -205,11 +205,11 @@ export default function App() {
     );
 
     try {
-      await fetch(`/api/spots/${spotId}/vote`, { method: 'POST' });
+      await fetch(`/spots.php?action=vote&id=${encodeURIComponent(spotId)}`, { method: 'POST' });
 
       // If user logged in, log upvote in user_history
       if (user?.id) {
-        fetch('/api/history', {
+        fetch('/history.php', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
