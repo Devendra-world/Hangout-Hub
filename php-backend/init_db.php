@@ -2,8 +2,13 @@
 /**
  * Hangout-Hub Database Initializer & Migration Tool
  * 
- * Sets up the database tables (compatible with MySQL and SQLite)
- * and seeds all 15 initial spots, survey feedback, and cafe proposals from JSON seeds.
+ * Sets up database tables (compatible with MySQL and SQLite):
+ * - spots (hangout spots catalog)
+ * - survey_responses (student feedback and statistics)
+ * - partnership_proposals (cafe promotion submissions)
+ * - users (student and admin accounts, profile data, preferences)
+ * - user_history (activity log: views, bookmarks, upvotes, bill splits)
+ * - user_bookmarks (saved favorite spots for students)
  */
 
 require_once __DIR__ . '/config/db.php';
@@ -97,55 +102,134 @@ if ($driver === 'sqlite') {
             submitted_at TEXT NOT NULL,
             created_at DATETIME DEFAULT CURRENT_TIMESTAMP
         );
+
+        CREATE TABLE IF NOT EXISTS users (
+            id TEXT PRIMARY KEY,
+            name TEXT NOT NULL,
+            email TEXT NOT NULL UNIQUE,
+            password_hash TEXT NOT NULL,
+            role TEXT NOT NULL DEFAULT 'student',
+            college TEXT NOT NULL DEFAULT 'Campus Hub',
+            city TEXT NOT NULL DEFAULT 'Ahmedabad',
+            preferred_budget INTEGER NOT NULL DEFAULT 200,
+            favorite_vibes_json TEXT,
+            bio TEXT,
+            avatar_color TEXT DEFAULT '#C85A32',
+            created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+            updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
+        );
+
+        CREATE TABLE IF NOT EXISTS user_history (
+            id TEXT PRIMARY KEY,
+            user_id TEXT NOT NULL,
+            spot_id TEXT NOT NULL,
+            action_type TEXT NOT NULL,
+            metadata_json TEXT,
+            created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+        );
+        CREATE INDEX IF NOT EXISTS idx_uh_user ON user_history (user_id);
+        CREATE INDEX IF NOT EXISTS idx_uh_spot ON user_history (spot_id);
+
+        CREATE TABLE IF NOT EXISTS user_bookmarks (
+            id TEXT PRIMARY KEY,
+            user_id TEXT NOT NULL,
+            spot_id TEXT NOT NULL,
+            created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+            UNIQUE(user_id, spot_id)
+        );
+    ");
+} else {
+    // MySQL table definitions
+    $pdo->exec("
+        CREATE TABLE IF NOT EXISTS `users` (
+            `id` VARCHAR(64) NOT NULL PRIMARY KEY,
+            `name` VARCHAR(255) NOT NULL,
+            `email` VARCHAR(255) NOT NULL UNIQUE,
+            `password_hash` VARCHAR(255) NOT NULL,
+            `role` VARCHAR(32) NOT NULL DEFAULT 'student',
+            `college` VARCHAR(255) NOT NULL DEFAULT 'Campus Hub',
+            `city` VARCHAR(100) NOT NULL DEFAULT 'Ahmedabad',
+            `preferred_budget` INT NOT NULL DEFAULT 200,
+            `favorite_vibes_json` TEXT,
+            `bio` TEXT,
+            `avatar_color` VARCHAR(32) DEFAULT '#C85A32',
+            `created_at` DATETIME DEFAULT CURRENT_TIMESTAMP,
+            `updated_at` DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+        ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+        CREATE TABLE IF NOT EXISTS `user_history` (
+            `id` VARCHAR(64) NOT NULL PRIMARY KEY,
+            `user_id` VARCHAR(64) NOT NULL,
+            `spot_id` VARCHAR(64) NOT NULL,
+            `action_type` VARCHAR(64) NOT NULL,
+            `metadata_json` TEXT,
+            `created_at` DATETIME DEFAULT CURRENT_TIMESTAMP,
+            INDEX (`user_id`),
+            INDEX (`spot_id`)
+        ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+        CREATE TABLE IF NOT EXISTS `user_bookmarks` (
+            `id` VARCHAR(64) NOT NULL PRIMARY KEY,
+            `user_id` VARCHAR(64) NOT NULL,
+            `spot_id` VARCHAR(64) NOT NULL,
+            `created_at` DATETIME DEFAULT CURRENT_TIMESTAMP,
+            UNIQUE KEY `unique_user_bookmark` (`user_id`, `spot_id`)
+        ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
     ");
 }
 
-// Clear and seed spots from spots_seed.json
-$seedFile = __DIR__ . '/data/spots_seed.json';
-if (file_exists($seedFile)) {
-    $spotsJson = file_get_contents($seedFile);
-    $spotsData = json_decode($spotsJson, true);
+// 2. Seed Spots from JSON if empty
+$stmt = $pdo->query("SELECT COUNT(*) AS total FROM spots");
+$count = (int)$stmt->fetch()['total'];
 
-    if (is_array($spotsData) && count($spotsData) > 0) {
-        $pdo->exec("DELETE FROM spots");
+if ($count === 0) {
+    echo "Seeding initial Ahmedabad hangout spots...\n";
+    $spotsFile = __DIR__ . '/data/spots_seed.json';
+    if (file_exists($spotsFile)) {
+        $spotsJson = file_get_contents($spotsFile);
+        $spotsData = json_decode($spotsJson, true);
 
         $insertSql = "INSERT INTO spots (
-            id, name, tagline, city, campus_name, neighborhood, distance_to_campus,
-            vibe_category, cost_min, cost_max, cost_avg, popular_order_example, official_claim_cost,
-            max_group_size, seating_description, push_together_allowed, booth_count, reservation_needed, reservation_tip,
-            wifi_speed_mbps, wifi_reliability, power_outlets, noise_decibels, noise_description,
-            board_games_available, outside_cake_allowed, student_discount_available, discount_note,
-            air_conditioned, open_late_night, closing_time, has_reel, reel_url, reel_creator, reel_hype_claim, ground_reality_truth, reality_score,
-            scout_name, scout_college, scout_notes, verified_date, upvotes, tags_json, visual_theme_json
+            id, name, tagline, city, campus_name, neighborhood, distance_to_campus, vibe_category,
+            cost_min, cost_max, cost_avg, popular_order_example, official_claim_cost,
+            max_group_size, seating_description, push_together_allowed, booth_count,
+            reservation_needed, reservation_tip, wifi_speed_mbps, wifi_reliability,
+            power_outlets, noise_decibels, noise_description, board_games_available,
+            outside_cake_allowed, student_discount_available, discount_note, air_conditioned,
+            open_late_night, closing_time, has_reel, reel_url, reel_creator, reel_hype_claim,
+            ground_reality_truth, reality_score, scout_name, scout_college, scout_notes,
+            verified_date, upvotes, tags_json, visual_theme_json
         ) VALUES (
-            :id, :name, :tagline, :city, :campus_name, :neighborhood, :distance_to_campus,
-            :vibe_category, :cost_min, :cost_max, :cost_avg, :popular_order_example, :official_claim_cost,
-            :max_group_size, :seating_description, :push_together_allowed, :booth_count, :reservation_needed, :reservation_tip,
-            :wifi_speed_mbps, :wifi_reliability, :power_outlets, :noise_decibels, :noise_description,
-            :board_games_available, :outside_cake_allowed, :student_discount_available, :discount_note,
-            :air_conditioned, :open_late_night, :closing_time, :has_reel, :reel_url, :reel_creator, :reel_hype_claim, :ground_reality_truth, :reality_score,
-            :scout_name, :scout_college, :scout_notes, :verified_date, :upvotes, :tags_json, :visual_theme_json
+            :id, :name, :tagline, :city, :campus_name, :neighborhood, :distance_to_campus, :vibe_category,
+            :cost_min, :cost_max, :cost_avg, :popular_order_example, :official_claim_cost,
+            :max_group_size, :seating_description, :push_together_allowed, :booth_count,
+            :reservation_needed, :reservation_tip, :wifi_speed_mbps, :wifi_reliability,
+            :power_outlets, :noise_decibels, :noise_description, :board_games_available,
+            :outside_cake_allowed, :student_discount_available, :discount_note, :air_conditioned,
+            :open_late_night, :closing_time, :has_reel, :reel_url, :reel_creator, :reel_hype_claim,
+            :ground_reality_truth, :reality_score, :scout_name, :scout_college, :scout_notes,
+            :verified_date, :upvotes, :tags_json, :visual_theme_json
         )";
 
-        $stmt = $pdo->prepare($insertSql);
+        $stmtInsert = $pdo->prepare($insertSql);
 
         foreach ($spotsData as $s) {
-            $stmt->execute([
+            $stmtInsert->execute([
                 ':id' => $s['id'],
                 ':name' => $s['name'],
                 ':tagline' => $s['tagline'],
                 ':city' => $s['city'] ?? 'Ahmedabad',
-                ':campus_name' => $s['campusName'] ?? 'Campus Hub',
+                ':campus_name' => $s['campusName'] ?? 'Ahmedabad Campus Hub',
                 ':neighborhood' => $s['neighborhood'],
                 ':distance_to_campus' => $s['distanceToCampus'],
                 ':vibe_category' => $s['vibeCategory'],
                 ':cost_min' => (int)($s['realPerPersonCost']['min'] ?? 100),
                 ':cost_max' => (int)($s['realPerPersonCost']['max'] ?? 200),
                 ':cost_avg' => (int)($s['realPerPersonCost']['avg'] ?? 150),
-                ':popular_order_example' => $s['realPerPersonCost']['popularOrderExample'] ?? 'Chai + Snack',
-                ':official_claim_cost' => $s['officialClaimCost'] ?? 'Food app claims higher',
+                ':popular_order_example' => $s['realPerPersonCost']['popularOrderExample'] ?? 'Cold Coffee + Maska Bun',
+                ':official_claim_cost' => $s['officialClaimCost'] ?? 'Lists ₹600 for two on aggregator',
                 ':max_group_size' => (int)($s['groupSeating']['maxGroupSize'] ?? 8),
-                ':seating_description' => $s['groupSeating']['seatingDescription'] ?? 'Seats student groups',
+                ':seating_description' => $s['groupSeating']['seatingDescription'] ?? 'Tables available',
                 ':push_together_allowed' => !empty($s['groupSeating']['pushTogetherAllowed']) ? 1 : 0,
                 ':booth_count' => (int)($s['groupSeating']['boothCount'] ?? 0),
                 ':reservation_needed' => !empty($s['groupSeating']['reservationNeeded']) ? 1 : 0,
@@ -181,44 +265,159 @@ if (file_exists($seedFile)) {
     }
 }
 
-// Seed survey responses
-$surveyFile = __DIR__ . '/data/surveys_seed.json';
-if (file_exists($surveyFile)) {
-    $surveyJson = file_get_contents($surveyFile);
-    $surveyData = json_decode($surveyJson, true);
+// 3. Seed Users (Admin + Student)
+$uCount = (int)$pdo->query("SELECT COUNT(*) AS total FROM users")->fetch()['total'];
+if ($uCount === 0) {
+    echo "Seeding default users (Admin & Student)...\n";
+    $insertUser = "INSERT INTO users (
+        id, name, email, password_hash, role, college, city, preferred_budget,
+        favorite_vibes_json, bio, avatar_color
+    ) VALUES (
+        :id, :name, :email, :password_hash, :role, :college, :city, :preferred_budget,
+        :favorite_vibes_json, :bio, :avatar_color
+    )";
+    $stU = $pdo->prepare($insertUser);
 
-    if (is_array($surveyData) && count($surveyData) > 0) {
-        $pdo->exec("DELETE FROM survey_responses");
-        $insertSurvey = "INSERT INTO survey_responses (
-            id, student_name, college_or_campus, year_of_study, monthly_hangout_budget,
-            primary_frustration, worst_experience_with_apps, ideal_spot_priorities_json,
-            max_acceptable_cost_per_head, average_group_size, submitted_at
-        ) VALUES (
-            :id, :student_name, :college_or_campus, :year_of_study, :monthly_hangout_budget,
-            :primary_frustration, :worst_experience_with_apps, :ideal_spot_priorities_json,
-            :max_acceptable_cost_per_head, :average_group_size, :submitted_at
-        )";
-        $st = $pdo->prepare($insertSurvey);
-        foreach ($surveyData as $r) {
-            $st->execute([
-                ':id' => $r['id'],
-                ':student_name' => $r['studentName'],
-                ':college_or_campus' => $r['collegeOrCampus'],
-                ':year_of_study' => $r['yearOfStudy'],
-                ':monthly_hangout_budget' => $r['monthlyHangoutBudget'],
-                ':primary_frustration' => $r['primaryFrustration'],
-                ':worst_experience_with_apps' => $r['worstExperienceWithApps'],
-                ':ideal_spot_priorities_json' => json_encode($r['idealSpotPriorities'] ?? []),
-                ':max_acceptable_cost_per_head' => (int)($r['maxAcceptableCostPerHead'] ?? 200),
-                ':average_group_size' => (int)($r['averageGroupSize'] ?? 6),
-                ':submitted_at' => $r['submittedAt'] ?? date('Y-m-d')
-            ]);
+    // Admin account
+    $stU->execute([
+        ':id' => 'usr_admin_1',
+        ':name' => 'Campus Admin',
+        ':email' => 'admin@hangouthub.in',
+        ':password_hash' => password_hash('admin123', PASSWORD_DEFAULT),
+        ':role' => 'admin',
+        ':college' => 'Ahmedabad University & CEPT Network',
+        ':city' => 'Ahmedabad',
+        ':preferred_budget' => 350,
+        ':favorite_vibes_json' => json_encode(['Study & Projects', 'Budget Bite & Chill', 'Aesthetic Hangout', 'Late Night Adda']),
+        ':bio' => 'System Administrator & Campus Scout Lead. Curating honest addas for Ahmedabad students.',
+        ':avatar_color' => '#7C3AED'
+    ]);
+
+    // Student account (Devendra)
+    $stU->execute([
+        ':id' => 'usr_devendra_1',
+        ':name' => 'Devendra Patadiya',
+        ':email' => 'patadiyadevendra5@gmail.com',
+        ':password_hash' => password_hash('student123', PASSWORD_DEFAULT),
+        ':role' => 'student',
+        ':college' => 'CEPT & Gujarat University Campus',
+        ':city' => 'Ahmedabad',
+        ':preferred_budget' => 180,
+        ':favorite_vibes_json' => json_encode(['Budget Bite & Chill', 'Study & Projects', 'Aesthetic Hangout']),
+        ':bio' => 'Design student loving budget aesthetic cafes, outdoor neem tree gardens & fast Wi-Fi for group study.',
+        ':avatar_color' => '#C85A32'
+    ]);
+
+    echo "Default accounts created:\n";
+    echo "  - Admin: admin@hangouthub.in (pw: admin123)\n";
+    echo "  - Student: patadiyadevendra5@gmail.com (pw: student123)\n";
+
+    // Seed realistic history & bookmarks for Devendra
+    $historySql = "INSERT INTO user_history (id, user_id, spot_id, action_type, metadata_json, created_at) VALUES (:id, :user_id, :spot_id, :action_type, :meta, :created_at)";
+    $stH = $pdo->prepare($historySql);
+
+    $now = date('Y-m-d H:i:s');
+    $stH->execute([
+        ':id' => 'hist-1',
+        ':user_id' => 'usr_devendra_1',
+        ':spot_id' => 'spot-zen-gufa',
+        ':action_type' => 'viewed',
+        ':meta' => json_encode(['source' => 'search', 'vibe' => 'Aesthetic Hangout']),
+        ':created_at' => date('Y-m-d H:i:s', strtotime('-1 day'))
+    ]);
+    $stH->execute([
+        ':id' => 'hist-2',
+        ':user_id' => 'usr_devendra_1',
+        ':spot_id' => 'spot-zen-gufa',
+        ':action_type' => 'saved',
+        ':meta' => json_encode(['note' => 'Go for afternoon sketch session under neem trees']),
+        ':created_at' => date('Y-m-d H:i:s', strtotime('-18 hours'))
+    ]);
+    $stH->execute([
+        ':id' => 'hist-3',
+        ':user_id' => 'usr_devendra_1',
+        ':spot_id' => 'spot-mocha-cabanas',
+        ':action_type' => 'saved',
+        ':meta' => json_encode(['note' => 'Birthday celebration with squad']),
+        ':created_at' => date('Y-m-d H:i:s', strtotime('-12 hours'))
+    ]);
+    $stH->execute([
+        ':id' => 'hist-4',
+        ':user_id' => 'usr_devendra_1',
+        ':spot_id' => 'spot-project-cafe',
+        ':action_type' => 'viewed',
+        ':meta' => json_encode(['source' => 'vibe_filter']),
+        ':created_at' => date('Y-m-d H:i:s', strtotime('-6 hours'))
+    ]);
+    $stH->execute([
+        ':id' => 'hist-5',
+        ':user_id' => 'usr_devendra_1',
+        ':spot_id' => 'spot-project-cafe',
+        ':action_type' => 'upvoted',
+        ':meta' => json_encode(['reason' => 'Art gallery & great coffee']),
+        ':created_at' => date('Y-m-d H:i:s', strtotime('-5 hours'))
+    ]);
+    $stH->execute([
+        ':id' => 'hist-6',
+        ':user_id' => 'usr_devendra_1',
+        ':spot_id' => 'spot-shambhu-hl',
+        ':action_type' => 'viewed',
+        ':meta' => json_encode(['source' => 'budget_filter', 'budget' => 95]),
+        ':created_at' => date('Y-m-d H:i:s', strtotime('-2 hours'))
+    ]);
+
+    // Seed bookmarks
+    $bmSql = "INSERT OR IGNORE INTO user_bookmarks (id, user_id, spot_id, created_at) VALUES (:id, :user_id, :spot_id, :created_at)";
+    if ($driver !== 'sqlite') {
+        $bmSql = "INSERT IGNORE INTO user_bookmarks (id, user_id, spot_id, created_at) VALUES (:id, :user_id, :spot_id, :created_at)";
+    }
+    $stB = $pdo->prepare($bmSql);
+    $stB->execute([':id' => 'bm-1', ':user_id' => 'usr_devendra_1', ':spot_id' => 'spot-zen-gufa', ':created_at' => date('Y-m-d H:i:s', strtotime('-18 hours'))]);
+    $stB->execute([':id' => 'bm-2', ':user_id' => 'usr_devendra_1', ':spot_id' => 'spot-mocha-cabanas', ':created_at' => date('Y-m-d H:i:s', strtotime('-12 hours'))]);
+
+    echo "Seeded activity history and bookmarks for demo student account.\n";
+}
+
+// 4. Seed Survey responses if empty
+$stCount = $pdo->query("SELECT COUNT(*) AS total FROM survey_responses");
+if ((int)$stCount->fetch()['total'] === 0) {
+    $surveyFile = __DIR__ . '/data/surveys_seed.json';
+    if (file_exists($surveyFile)) {
+        $surveyJson = file_get_contents($surveyFile);
+        $surveyData = json_decode($surveyJson, true);
+
+        if (is_array($surveyData) && count($surveyData) > 0) {
+            $insertSurvey = "INSERT INTO survey_responses (
+                id, student_name, college_or_campus, year_of_study, monthly_hangout_budget,
+                primary_frustration, worst_experience_with_apps, ideal_spot_priorities_json,
+                max_acceptable_cost_per_head, average_group_size, submitted_at
+            ) VALUES (
+                :id, :student_name, :college_or_campus, :year_of_study, :monthly_hangout_budget,
+                :primary_frustration, :worst_experience_with_apps, :ideal_spot_priorities_json,
+                :max_acceptable_cost_per_head, :average_group_size, :submitted_at
+            )";
+            $st = $pdo->prepare($insertSurvey);
+            foreach ($surveyData as $r) {
+                $st->execute([
+                    ':id' => $r['id'],
+                    ':student_name' => $r['studentName'],
+                    ':college_or_campus' => $r['collegeOrCampus'],
+                    ':year_of_study' => $r['yearOfStudy'],
+                    ':monthly_hangout_budget' => $r['monthlyHangoutBudget'],
+                    ':primary_frustration' => $r['primaryFrustration'],
+                    ':worst_experience_with_apps' => $r['worstExperienceWithApps'],
+                    ':ideal_spot_priorities_json' => json_encode($r['idealSpotPriorities'] ?? []),
+                    ':max_acceptable_cost_per_head' => (int)($r['maxAcceptableCostPerHead'] ?? 200),
+                    ':average_group_size' => (int)($r['averageGroupSize'] ?? 6),
+                    ':submitted_at' => $r['submittedAt'] ?? date('Y-m-d')
+                ]);
+            }
+            echo "Seeded " . count($surveyData) . " student surveys.\n";
         }
-        echo "Seeded " . count($surveyData) . " student surveys.\n";
     }
 }
 
-// Seed partnerships if empty
+// 5. Seed Partnerships if empty
 $stCount = $pdo->query("SELECT COUNT(*) AS total FROM partnership_proposals");
 if ((int)$stCount->fetch()['total'] === 0) {
     $insertPart = "INSERT INTO partnership_proposals (

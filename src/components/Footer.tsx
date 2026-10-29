@@ -11,13 +11,17 @@ interface FooterProps {
   onOpenSubmitSpot: () => void;
   onOpenPartnerModal: () => void;
   onOpenPhpModal?: () => void;
+  isAdmin?: boolean;
+  onOpenQrGenerator?: () => void;
 }
 
 export const Footer: React.FC<FooterProps> = ({
   onSelectTab,
   onOpenSubmitSpot,
   onOpenPartnerModal,
-  onOpenPhpModal
+  onOpenPhpModal,
+  isAdmin = false,
+  onOpenQrGenerator
 }) => {
   return (
     <footer className="bg-[#FAF7F2] border-t border-[#E8DFC8] mt-20">
@@ -39,12 +43,12 @@ export const Footer: React.FC<FooterProps> = ({
             </div>
 
             <p className="text-xs text-[#5C4A3A] leading-relaxed max-w-sm">
-              The aesthetic, student-powered guide to Ahmedabad’s best campus cafes and addas — verified with real per-person bills, guaranteed squad seating, tested WiFi speeds, and unedited Instagram reel reality checks.
+              The aesthetic, student-powered guide to Ahmedabad’s best campus cafes and hangout spots — verified with real per-person bills, guaranteed squad seating, tested WiFi speeds, and unedited Instagram reel reality checks.
             </p>
 
             <div className="text-[11px] text-[#8C6D53] flex items-center gap-1.5 font-medium">
               <MapPin className="w-3.5 h-3.5 text-[#C85A32]" />
-              <span>Audited by CEPT, HL, IIM-A, NID & AU student scouts</span>
+              <span>Audited by CEPT, HL, JG, IIM-A, NID & AU student scouts</span>
             </div>
           </div>
 
@@ -94,14 +98,24 @@ export const Footer: React.FC<FooterProps> = ({
                   Community Wishlist & Spot Requests
                 </button>
               </li>
-              {onOpenPhpModal && (
+              {onOpenQrGenerator && (
+                <li>
+                  <button
+                    onClick={onOpenQrGenerator}
+                    className="hover:text-[#2A1810] transition-colors cursor-pointer flex items-center gap-1.5"
+                  >
+                    <span>Instant QR Code Generator</span>
+                  </button>
+                </li>
+              )}
+              {isAdmin && onOpenPhpModal && (
                 <li className="pt-1">
                   <button
                     onClick={onOpenPhpModal}
                     className="text-[#7C3AED] hover:text-[#5B21B6] font-bold transition-colors cursor-pointer flex items-center gap-1.5"
                   >
                     <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-                    <span>PHP & MySQL Database Center</span>
+                    <span>Admin: PHP 8.2 & SQL Database Center</span>
                   </button>
                 </li>
               )}
@@ -114,7 +128,7 @@ export const Footer: React.FC<FooterProps> = ({
               Campus Scouts & Cafe Owners
             </div>
             <p className="text-[#5C4A3A] text-xs leading-relaxed font-medium">
-              Know an unlisted student adda near your campus? Or manage a cafe near CEPT, HL, Vastrapur, or on Sindhu Bhavan Road?
+              Know an unlisted student hangout near your campus? Or manage a cafe near CEPT, HL, JG, Vastrapur, or on Sindhu Bhavan Road?
             </p>
             <div className="flex flex-wrap gap-2 pt-1">
               <button
@@ -137,7 +151,7 @@ export const Footer: React.FC<FooterProps> = ({
         {/* Bottom copyright notice */}
         <div className="mt-12 pt-6 border-t border-[#E8DFC8] flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-[#8C6D53]">
           <div>
-            © 2026 Hangout-Hub · Ahmedabad Student Cafe & Adda Guide.
+            © 2026 Hangout-Hub · Ahmedabad Student Cafe & Hangout Guide.
           </div>
           <div className="flex items-center gap-4">
             <span>Student Scout Verified</span>

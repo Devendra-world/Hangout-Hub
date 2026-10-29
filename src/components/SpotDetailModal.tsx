@@ -21,16 +21,28 @@ import {
   AlertCircle,
   Calculator,
   ShieldCheck,
-  Tag
+  Tag,
+  QrCode,
+  Bookmark
 } from 'lucide-react';
 
 interface SpotDetailModalProps {
   spot: HangoutSpot | null;
   onClose: () => void;
   onVote: (spotId: string) => void;
+  onOpenQr?: (spot: HangoutSpot) => void;
+  onToggleSave?: (spot: HangoutSpot) => void;
+  isSaved?: boolean;
 }
 
-export const SpotDetailModal: React.FC<SpotDetailModalProps> = ({ spot, onClose, onVote }) => {
+export const SpotDetailModal: React.FC<SpotDetailModalProps> = ({
+  spot,
+  onClose,
+  onVote,
+  onOpenQr,
+  onToggleSave,
+  isSaved = false
+}) => {
   if (!spot) return null;
 
   const [groupSize, setGroupSize] = useState<number>(Math.min(6, spot.groupSeating.maxGroupSize));
@@ -359,7 +371,7 @@ export const SpotDetailModal: React.FC<SpotDetailModalProps> = ({ spot, onClose,
                   {spot.amenities.closingTime}
                 </div>
                 <div className="text-[11px] text-stone-500">
-                  {spot.amenities.openLateNight ? 'Late Night Adda' : 'Evening Closing'}
+                  {spot.amenities.openLateNight ? 'Late Night Hangout' : 'Evening Closing'}
                 </div>
               </div>
 
@@ -428,12 +440,42 @@ export const SpotDetailModal: React.FC<SpotDetailModalProps> = ({ spot, onClose,
             <span>Tags: {spot.tags.join(' · ')}</span>
           </div>
 
-          <button
-            onClick={onClose}
-            className="px-5 py-2 font-bold text-stone-700 hover:text-stone-900 bg-white border border-stone-200 rounded-xl hover:bg-stone-50 transition-colors cursor-pointer"
-          >
-            Close
-          </button>
+          <div className="flex items-center gap-2">
+            {onOpenQr && (
+              <button
+                type="button"
+                onClick={() => onOpenQr(spot)}
+                className="flex items-center gap-1.5 px-3.5 py-2 font-bold text-[#2A1810] bg-[#EFE7DA] hover:bg-[#E5DBCB] border border-[#D9CDB8] rounded-xl transition-all cursor-pointer shadow-2xs"
+                title="Generate QR code for this spot"
+              >
+                <QrCode className="w-3.5 h-3.5 text-[#C85A32]" />
+                <span>Spot QR</span>
+              </button>
+            )}
+
+            {onToggleSave && (
+              <button
+                type="button"
+                onClick={() => onToggleSave(spot)}
+                className={`flex items-center gap-1.5 px-3.5 py-2 font-bold rounded-xl border transition-all cursor-pointer shadow-2xs ${
+                  isSaved
+                    ? 'bg-[#C85A32] text-white border-[#C85A32]'
+                    : 'bg-white text-stone-800 border-stone-200 hover:bg-stone-100'
+                }`}
+                title="Save spot to your profile bookmarks"
+              >
+                <Bookmark className={`w-3.5 h-3.5 ${isSaved ? 'fill-white' : ''}`} />
+                <span>{isSaved ? 'Saved' : 'Save Spot'}</span>
+              </button>
+            )}
+
+            <button
+              onClick={onClose}
+              className="px-5 py-2 font-bold text-stone-700 hover:text-stone-900 bg-white border border-stone-200 rounded-xl hover:bg-stone-50 transition-colors cursor-pointer"
+            >
+              Close
+            </button>
+          </div>
         </div>
 
       </div>

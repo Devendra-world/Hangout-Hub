@@ -21,7 +21,7 @@ interface StudentFeedbackSectionProps {
 }
 
 const CAMPUS_TOPICS = [
-  'Spot recommendation (hidden budget adda near my campus)',
+  'Spot recommendation (hidden budget spot near my campus)',
   'Price discrepancy on a listed spot (actual bill was higher)',
   'Seating issue (staff would not push tables together for squad of 6+)',
   'WiFi / socket audit request (need verified laptop cafes near my college)',
@@ -273,7 +273,7 @@ export const StudentFeedbackSection: React.FC<StudentFeedbackSectionProps> = ({
                     className="w-full accent-amber-600 cursor-pointer"
                   />
                   <div className="flex justify-between text-[10px] text-stone-400">
-                    <span>₹50 (HL Adda)</span>
+                    <span>₹50 (HL Six Roads)</span>
                     <span>₹200 (Gufa Cafe)</span>
                     <span>₹450 (SBR Treat)</span>
                   </div>

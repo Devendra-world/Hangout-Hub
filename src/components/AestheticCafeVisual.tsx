@@ -63,7 +63,7 @@ export const AestheticCafeVisual: React.FC<AestheticCafeVisualProps> = ({ spot, 
 
       case 'spot-shambhu-hl':
       case 'spot-pune-goodluck':
-        // Shambhu's HL Adda / Goodluck Cafe (Cold coffee glass, chai, street bench)
+        // Shambhu's HL Spot / Goodluck Cafe (Cold coffee glass, chai, street bench)
         return (
           <svg className="absolute inset-0 w-full h-full object-cover" viewBox="0 0 600 400" preserveAspectRatio="xMidYMid slice">
             <defs>
@@ -250,7 +250,7 @@ export const AestheticCafeVisual: React.FC<AestheticCafeVisualProps> = ({ spot, 
               <line x1="290" y1="180" x2="275" y2="280" stroke="#E11D48" strokeWidth="6" />
             </svg>
           );
-        } else if (vibeCategory === 'Late Night Adda') {
+        } else if (vibeCategory === 'Late Night Hangout') {
           return (
             <svg className="absolute inset-0 w-full h-full object-cover" viewBox="0 0 600 400" preserveAspectRatio="xMidYMid slice">
               <defs>

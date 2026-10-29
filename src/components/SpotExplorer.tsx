@@ -4,8 +4,9 @@
  */
 
 import React, { useState, useMemo } from 'react';
-import { HangoutSpot, VibeCategory } from '../types/index.ts';
+import { HangoutSpot, VibeCategory, UserProfile } from '../types/index.ts';
 import { SpotCard } from './SpotCard.tsx';
+import { RecommendedShelf } from './RecommendedShelf.tsx';
 import { Search, SlidersHorizontal, RotateCcw, Sparkles, MapPin, Globe, PlusCircle } from 'lucide-react';
 
 interface SpotExplorerProps {
@@ -13,6 +14,9 @@ interface SpotExplorerProps {
   onSelectSpot: (spot: HangoutSpot) => void;
   onVoteSpot: (spotId: string) => void;
   onOpenSubmitSpot: () => void;
+  user?: UserProfile | null;
+  onOpenQr?: (spot: HangoutSpot) => void;
+  onOpenAuth?: () => void;
 }
 
 const CITY_CAMPUS_AREAS: Record<string, { label: string; value: string }[]> = {
@@ -62,14 +66,17 @@ const VIBE_CATEGORIES: (VibeCategory | 'All')[] = [
   'Study & Projects',
   'Aesthetic Hangout',
   'Board Games & Fun',
-  'Late Night Adda'
+  'Late Night Hangout'
 ];
 
 export const SpotExplorer: React.FC<SpotExplorerProps> = ({
   spots,
   onSelectSpot,
   onVoteSpot,
-  onOpenSubmitSpot
+  onOpenSubmitSpot,
+  user,
+  onOpenQr,
+  onOpenAuth
 }) => {
   const [selectedCity, setSelectedCity] = useState<string>('all');
   const [searchQuery, setSearchQuery] = useState('');
@@ -309,10 +316,18 @@ export const SpotExplorer: React.FC<SpotExplorerProps> = ({
             className="inline-flex items-center gap-1.5 px-3.5 py-1.5 text-xs font-bold text-amber-900 bg-amber-50 hover:bg-amber-100 border border-amber-200/80 rounded-full whitespace-nowrap transition-colors cursor-pointer shrink-0 ml-auto"
           >
             <PlusCircle className="w-3.5 h-3.5 text-amber-700" />
-            <span>+ Add Your College Adda</span>
+            <span>+ Add Your College Spot</span>
           </button>
         </div>
       </div>
+
+      {/* Personalized AI & History Recommendations Shelf */}
+      <RecommendedShelf
+        user={user || null}
+        onSelectSpot={onSelectSpot}
+        onOpenQr={onOpenQr || (() => {})}
+        onOpenAuth={onOpenAuth || (() => {})}
+      />
 
       {/* Header & Section Title */}
       <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-stone-200 pb-6">
@@ -328,8 +343,8 @@ export const SpotExplorer: React.FC<SpotExplorerProps> = ({
 
           <h2 className="text-2xl sm:text-3xl font-extrabold text-stone-900 mt-1 font-heading">
             {selectedCity === 'all'
-              ? 'Campus Cafes & Student Addas Nationwide'
-              : `Famous ${selectedCity} Addas & Student Cafes`}
+              ? 'Campus Cafes & Student Hangouts Nationwide'
+              : `Famous ${selectedCity} Hangouts & Student Cafes`}
           </h2>
 
           <p className="text-sm text-stone-600 mt-1 max-w-2xl font-body">
@@ -588,7 +603,7 @@ export const SpotExplorer: React.FC<SpotExplorerProps> = ({
                 : `No audited spots found for this filter in ${selectedCity === 'all' ? 'any city' : selectedCity}`}
             </h3>
             <p className="text-xs text-stone-500 max-w-md mx-auto">
-              Hangout-Hub is 100% student powered! You can be the first scout to add your favorite college adda, chai tapri, or project loft.
+              Hangout-Hub is 100% student powered! You can be the first scout to add your favorite college hangout, chai tapri, or project loft.
             </p>
           </div>
           <div className="flex items-center justify-center gap-3 pt-2">

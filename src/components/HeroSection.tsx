@@ -41,7 +41,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
             <div className="flex flex-wrap items-center gap-2 text-xs font-bold tracking-wide text-amber-800 uppercase">
               <span className="flex items-center gap-1">
                 <MapPin className="w-3.5 h-3.5 text-amber-700" />
-                Universal Campus Adda Network
+                Universal Student Hangout Network
               </span>
               <span aria-hidden="true">·</span>
               <span>Ahmedabad · Gandhinagar · Delhi NCR · Bengaluru · Mumbai · Pune</span>
@@ -91,7 +91,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
                 Audited by Student Campus Scouts
               </span>
               <span aria-hidden="true">·</span>
-              <span>CEPT & HL · PDPU · DU North · Christ · Mithibai · FC Road</span>
+              <span>CEPT, HL & JG · PDPU · DU North · Christ · Mithibai · FC Road</span>
             </div>
           </div>
 
@@ -145,7 +145,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
                 <div className="bg-stone-800/50 p-3 rounded-xl border border-stone-700/40 text-xs text-stone-300 italic">
                   "At Amdavad ni Gufa and HL Six Roads, you can sit with 10 classmates and spend under ₹100–₹160 per person without anyone telling you to leave."
                   <div className="not-italic text-[11px] font-bold text-amber-400 mt-1">
-                    — CEPT & HL College Scout Network
+                    — CEPT, HL & JG College Scout Network
                   </div>
                 </div>
               </div>

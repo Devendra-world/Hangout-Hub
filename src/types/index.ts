@@ -8,7 +8,7 @@ export type VibeCategory =
   | 'Budget Bite & Chill' 
   | 'Board Games & Fun' 
   | 'Aesthetic Hangout' 
-  | 'Late Night Adda';
+  | 'Late Night Hangout';
 
 export interface HangoutSpot {
   id: string;
@@ -122,3 +122,38 @@ export interface CafePartnershipProposal {
   notes: string;
   submittedAt: string;
 }
+
+export interface UserProfile {
+  id: string;
+  name: string;
+  email: string;
+  role: 'student' | 'admin';
+  college: string;
+  city: string;
+  preferredBudget: number;
+  favoriteVibes: string[];
+  bio: string;
+  avatarColor: string;
+  createdAt?: string;
+}
+
+export interface UserActivityItem {
+  id: string;
+  actionType: 'viewed' | 'saved' | 'upvoted' | 'bill_split';
+  actionTime: string;
+  spotId: string;
+  spotName: string;
+  neighborhood: string;
+  city: string;
+  vibeCategory: string;
+  costAvg: number;
+  metadata?: Record<string, any>;
+}
+
+export interface RecommendationItem {
+  spot: HangoutSpot;
+  recommendationScore: number;
+  primaryReason: string;
+  allReasons: string[];
+}
+

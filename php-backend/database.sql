@@ -123,7 +123,54 @@ CREATE TABLE `partnership_proposals` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- -----------------------------------------------------------------------------
--- 4. Seed Data for `spots`
+-- 4. Table structure for `users` (Student Profiles & Admins)
+-- -----------------------------------------------------------------------------
+DROP TABLE IF EXISTS `users`;
+CREATE TABLE `users` (
+  `id` VARCHAR(64) NOT NULL PRIMARY KEY,
+  `name` VARCHAR(255) NOT NULL,
+  `email` VARCHAR(255) NOT NULL UNIQUE,
+  `password_hash` VARCHAR(255) NOT NULL,
+  `role` VARCHAR(32) NOT NULL DEFAULT 'student',
+  `college` VARCHAR(255) NOT NULL DEFAULT 'Campus Hub',
+  `city` VARCHAR(100) NOT NULL DEFAULT 'Ahmedabad',
+  `preferred_budget` INT NOT NULL DEFAULT 200,
+  `favorite_vibes_json` TEXT,
+  `bio` TEXT,
+  `avatar_color` VARCHAR(32) DEFAULT '#C85A32',
+  `created_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- -----------------------------------------------------------------------------
+-- 5. Table structure for `user_history` (Interaction Tracking & Scoring)
+-- -----------------------------------------------------------------------------
+DROP TABLE IF EXISTS `user_history`;
+CREATE TABLE `user_history` (
+  `id` VARCHAR(64) NOT NULL PRIMARY KEY,
+  `user_id` VARCHAR(64) NOT NULL,
+  `spot_id` VARCHAR(64) NOT NULL,
+  `action_type` VARCHAR(64) NOT NULL,
+  `metadata_json` TEXT,
+  `created_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  INDEX (`user_id`),
+  INDEX (`spot_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- -----------------------------------------------------------------------------
+-- 6. Table structure for `user_bookmarks` (Student Saved Addas)
+-- -----------------------------------------------------------------------------
+DROP TABLE IF EXISTS `user_bookmarks`;
+CREATE TABLE `user_bookmarks` (
+  `id` VARCHAR(64) NOT NULL PRIMARY KEY,
+  `user_id` VARCHAR(64) NOT NULL,
+  `spot_id` VARCHAR(64) NOT NULL,
+  `created_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  UNIQUE KEY `unique_user_bookmark` (`user_id`, `spot_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- -----------------------------------------------------------------------------
+-- 7. Seed Data for `spots`
 -- -----------------------------------------------------------------------------
 INSERT INTO `spots` (`id`, `name`, `tagline`, `city`, `campus_name`, `neighborhood`, `distance_to_campus`, `vibe_category`, `cost_min`, `cost_max`, `cost_avg`, `popular_order_example`, `official_claim_cost`, `max_group_size`, `seating_description`, `push_together_allowed`, `booth_count`, `reservation_needed`, `reservation_tip`, `wifi_speed_mbps`, `wifi_reliability`, `power_outlets`, `noise_decibels`, `noise_description`, `board_games_available`, `outside_cake_allowed`, `student_discount_available`, `discount_note`, `air_conditioned`, `open_late_night`, `closing_time`, `has_reel`, `reel_url`, `reel_creator`, `reel_hype_claim`, `ground_reality_truth`, `reality_score`, `scout_name`, `scout_college`, `scout_notes`, `verified_date`, `upvotes`, `tags_json`, `visual_theme_json`) VALUES
 ('spot-zen-gufa', 'Zen Cafe @ Amdavad ni Gufa', 'Open-air amphitheatre under neem trees next to M.F. Husain & B.V. Doshi’s architectural cave', 'Ahmedabad', 'CEPT & Gujarat Univ', 'Navrangpura', '0.1 km (2 min walk from CEPT & Gujarat Univ)', 'Aesthetic Hangout', 110, 220, 160, 'Ginger Mint Iced Tea + Thin Crust Margherita Slice + Samosa = ₹160', 'Zomato lists: ₹650 for two (misleading! Tea & quick bites are only ₹80–₹120)', 18, 'Outdoor amphitheatre stone steps + rustic wooden tables. Easily seats 12–18 students together in the open air without feeling cramped.', 1, 0, 0, 'Walk-ins always welcome. Golden hour (5:30 PM to 7:00 PM) has the best sunset light through the neem leaves.', 35, 'Decent for Browsing', 'Select Wall Tables', 54, 'Breezy outdoor campus debates, acoustic guitar strums, and rustling trees', 0, 1, 1, '10% student concession on coffee combos with CEPT / GU / AU ID', 0, 1, '11:00 PM', 1, 'https://instagram.com/reel/amdavad-gufa-cafe', '@ahmedabad_cafe_diaries', 'Secret underground cave dining experience with Paris-style aesthetic!', 'The cave (Gufa) is an art gallery next door, while the cafe is actually open-air under gorgeous neem trees. Incredibly peaceful, zero rush to leave, and arguably the most artistic hangout spot in Ahmedabad.', 92, 'Kavya & Harsh (CEPT Architecture & AU)', 'CEPT University Campus Scout', 'The ultimate student adda in Ahmedabad. We spend 3 hours here discussing studio jury projects. Staff never pushes you to re-order.', 'Oct 2026', 312, '["Near CEPT","Open Air Neem Shade","Architectural Icon","Under \u20b9200","Creative Adda"]', '{"primaryColor":"#78350F","patternType":"warm","heroIconName":"Coffee"}'),

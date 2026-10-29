@@ -216,7 +216,7 @@ export const SubmitSpotModal: React.FC<SubmitSpotModalProps> = ({ isOpen, onClos
                       <option value="Study & Projects">Study & Projects</option>
                       <option value="Aesthetic Hangout">Aesthetic Hangout</option>
                       <option value="Board Games & Fun">Board Games & Fun</option>
-                      <option value="Late Night Adda">Late Night Adda</option>
+                      <option value="Late Night Hangout">Late Night Hangout</option>
                     </select>
                   </div>
                 </div>

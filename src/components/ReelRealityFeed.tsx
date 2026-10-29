@@ -186,7 +186,7 @@ export const ReelRealityFeed: React.FC<ReelRealityFeedProps> = ({ spots, onSelec
                     <ExternalLink className="w-3 h-3 text-stone-400" />
                   </a>
                 ) : (
-                  <span className="text-stone-400">Word-of-mouth adda</span>
+                  <span className="text-stone-400">Word-of-mouth spot</span>
                 )}
 
                 <button

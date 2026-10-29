@@ -56,11 +56,11 @@ export const INITIAL_SPOTS: HangoutSpot[] = [
     scoutReview: {
       scoutName: 'Kavya & Harsh (CEPT Architecture & AU)',
       scoutCollege: 'CEPT University Campus Scout',
-      scoutNotes: 'The ultimate student adda in Ahmedabad. We spend 3 hours here discussing studio jury projects. Staff never pushes you to re-order.',
+      scoutNotes: 'The ultimate student hangout in Ahmedabad. We spend 3 hours here discussing studio jury projects. Staff never pushes you to re-order.',
       verifiedDate: 'Oct 2026',
       upvotes: 312
     },
-    tags: ['Near CEPT', 'Open Air Neem Shade', 'Architectural Icon', 'Under ₹200', 'Creative Adda'],
+    tags: ['Near CEPT', 'Open Air Neem Shade', 'Architectural Icon', 'Under ₹200', 'Creative Hub'],
     visualTheme: {
       primaryColor: '#78350F',
       patternType: 'warm',
@@ -74,7 +74,7 @@ export const INITIAL_SPOTS: HangoutSpot[] = [
   },
   {
     id: 'spot-shambhu-hl',
-    name: "Shambhu's Coffee Bar (HL Adda)",
+    name: "Shambhu's Coffee Bar (HL Six Roads)",
     tagline: 'The undisputed legendary campus institution for frothy thick cold coffee, grilled puffs & midnight chai',
     city: 'Ahmedabad',
     campusName: 'HL Commerce & St. Xavier’s',
@@ -94,7 +94,7 @@ export const INITIAL_SPOTS: HangoutSpot[] = [
       pushTogetherAllowed: true,
       boothCount: 0,
       reservationNeeded: false,
-      reservationTip: 'Never needs reservation. Peak crowd arrives at 11 AM (post-class) and 9:30 PM (night adda).'
+      reservationTip: 'Never needs reservation. Peak crowd arrives at 11 AM (post-class) and 9:30 PM (night hangout).'
     },
     amenities: {
       wifiSpeedMbps: 20,
@@ -125,7 +125,7 @@ export const INITIAL_SPOTS: HangoutSpot[] = [
       verifiedDate: 'Oct 2026',
       upvotes: 420
     },
-    tags: ['Under ₹100', 'HL College Classic', 'Late Night to 1:30 AM', 'Cold Coffee', 'Mass Group Adda'],
+    tags: ['Under ₹100', 'HL College Classic', 'Late Night to 1:30 AM', 'Cold Coffee', 'Mass Group Hangout'],
     visualTheme: {
       primaryColor: '#B45309',
       patternType: 'warm',
