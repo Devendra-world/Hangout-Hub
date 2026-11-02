@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link
+      rel="icon"
+      type="image/svg+xml"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%232A1810'/%3E%3Cpath d='M18 24h22v14a11 11 0 0 1-22 0V24zm22 3h4a5 5 0 0 1 0 10h-4' fill='none' stroke='%23F59E0B' stroke-width='4' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpath d='M24 14v5M30 12v7M36 14v5' stroke='%23FAF7F2' stroke-width='3' stroke-linecap='round'/%3E%3C/svg%3E"
+    />
+
+    <title>Hangout-Hub — Student Campus Cafes & Group Hangout Guide</title>
+
+    <meta
+      name="description"
+      content="Discover aesthetic, budget-friendly cafes and group hangouts with real per-person bills, true squad seating, verified WiFi, and Instagram reel reality checks across Ahmedabad and campuses nationwide."
+    />
+
+    <meta
+      property="og:title"
+      content="Hangout-Hub — Student Campus Cafes & Group Hangout Guide"
+    />
+    <meta
+      property="og:description"
+      content="Discover aesthetic, budget-friendly cafes and group hangouts with real per-person bills, true squad seating, verified WiFi, and Instagram reel reality checks across Ahmedabad and campuses nationwide."
+    />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://hangout-hub.xo.je/" />
+
+    <link
+      rel="preload"
+      as="image"
+      href="/icons/icon-512.png"
+      fetchpriority="high"
+    />
+
+    <link rel="canonical" href="https://hangout-hub.xo.je/" />
+    <meta name="twitter:card" content="summary_large_image" />
+
+    <link rel="manifest" href="/manifest.webmanifest" />
+    <meta name="theme-color" content="#000000" />
+
+    <link rel="apple-touch-icon" href="/icons/icon-192.png" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+    <link
+      href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Preserve saved theme -->
+    <script>
+      (function () {
+        try {
+          var stored = localStorage.getItem("hangout_hub_night_mode");
+
+          if (stored === "true") {
+            document.documentElement.classList.add("dark");
+          } else {
+            document.documentElement.classList.remove("dark");
+          }
+        } catch (e) {}
+      })();
+    </script>
+
+    <!-- Detect installed PWA before the page renders -->
+    <script>
+      (function () {
+        try {
+          var standalone =
+            window.matchMedia("(display-mode: standalone)").matches ||
+            window.matchMedia("(display-mode: fullscreen)").matches ||
+            window.navigator.standalone === true;
+
+          if (standalone) {
+            document.documentElement.classList.add("standalone-app");
+          }
+        } catch (e) {}
+      })();
+    </script>
+
+    <!-- Startup splash styling -->
+    <style>html,body{min-height:100%;margin:0}html.standalone-app,html.standalone-app body{background:#000!important}html.standalone-app #root{opacity:0;transition:opacity .55s}html.standalone-app.app-visible #root{opacity:1}#startup-splash{z-index:999999;opacity:1;background:#000;justify-content:center;align-items:center;display:none;position:fixed;inset:0}html.standalone-app #startup-splash{display:flex}.splash-content,.splash-bottom{transition:opacity .65s,transform .65s}html.standalone-app.splash-exit .splash-content{opacity:0;transform:translateY(-8px)}html.standalone-app.splash-exit .splash-bottom{opacity:0}.splash-content{text-align:center;flex-direction:column;align-items:center;padding:24px;display:flex}.splash-logo-wrap{justify-content:center;align-items:center;width:170px;height:170px;margin-bottom:28px;animation:1.5s cubic-bezier(.2,.8,.2,1) both splashReveal;display:flex;position:relative}.splash-glow{filter:blur(35px);background:#f59e0b21;border-radius:50%;width:145px;height:145px;animation:3s ease-in-out infinite glowPulse;position:absolute}.splash-logo{z-index:1;object-fit:contain;filter:drop-shadow(0 0 18px #f59e0b33);width:125px;height:125px;position:relative}.splash-title{color:#faf7f2;letter-spacing:3px;margin:0;font-family:Outfit,sans-serif;font-size:30px;font-weight:800;animation:1.3s .35s both textReveal}.splash-title span{color:#f59e0b}.splash-tagline{color:#a8a29e;letter-spacing:1px;margin:12px 0 0;font-family:Plus Jakarta Sans,sans-serif;font-size:12px;animation:1.3s .55s both textReveal}.splash-loader{justify-content:center;align-items:center;gap:9px;margin-top:42px;display:flex}.splash-loader span{background:#f59e0b;border-radius:50%;width:7px;height:7px;animation:1.4s ease-in-out infinite dotPulse}.splash-loader span:nth-child(2){animation-delay:.2s}.splash-loader span:nth-child(3){animation-delay:.4s}.splash-bottom{color:#57534e;letter-spacing:3px;font-family:Plus Jakarta Sans,sans-serif;font-size:9px;font-weight:700;animation:1.5s .7s both textReveal;position:absolute;bottom:38px}@keyframes splashReveal{0%{opacity:0;transform:scale(.82)}to{opacity:1;transform:scale(1)}}@keyframes textReveal{0%{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}@keyframes glowPulse{0%,to{opacity:.5;transform:scale(.9)}50%{opacity:1;transform:scale(1.12)}}@keyframes dotPulse{0%,60%,to{opacity:.3;transform:scale(.75)}30%{opacity:1;transform:scale(1.25)}}</style>
+    <script type="module" crossorigin src="/assets/index-DQirzTsq.js"></script>
+    <link rel="stylesheet" crossorigin href="/assets/index-Dt9BAWMF.css">
+  </head>
+
+  <body
+    class="bg-[#FAF8F5] dark:bg-[#120E0B] text-stone-900 dark:text-stone-100 antialiased selection:bg-[#EBDDC9] selection:text-[#3D261A] dark:selection:bg-amber-900 dark:selection:text-amber-100 min-h-screen transition-colors duration-200"
+  >
+    <div id="startup-splash">
+      <div class="splash-content">
+        <div class="splash-logo-wrap">
+          <div class="splash-glow"></div>
+
+          <img
+            src="/icons/icon-512.png"
+            alt="Hangout Hub"
+            class="splash-logo"
+          />
+        </div>
+
+        <h1 class="splash-title">HANGOUT <span>HUB</span></h1>
+
+        <p class="splash-tagline">Your space. Your people. Your moments.</p>
+
+        <div class="splash-loader">
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+      </div>
+
+      <div class="splash-bottom">MADE FOR YOUR MOMENTS</div>
+    </div>
+
+    <div id="root"></div>
+
+
+    <script>
+      if ("serviceWorker" in navigator) {
+        window.addEventListener("load", async () => {
+          try {
+            const registration = await navigator.serviceWorker.register(
+              "/sw.js",
+              { scope: "/" },
+            );
+
+            console.log("Service Worker registered:", registration);
+          } catch (error) {
+            console.error("Service Worker registration failed:", error);
+          }
+        });
+      }
+    </script>
+  </body>
+</html>
