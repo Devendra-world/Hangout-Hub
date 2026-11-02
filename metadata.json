@@ -1,6 +1,0 @@
-{
-  "name": "Hangout-Hub",
-  "description": "Aesthetic Ahmedabad campus cafe & group hangout explorer: real per-person bills, guaranteed squad seating, verified WiFi, and Instagram reel reality checks.",
-  "requestFramePermissions": [],
-  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
-}
