@@ -1,0 +1,343 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link
+      rel="icon"
+      type="image/svg+xml"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%232A1810'/%3E%3Cpath d='M18 24h22v14a11 11 0 0 1-22 0V24zm22 3h4a5 5 0 0 1 0 10h-4' fill='none' stroke='%23F59E0B' stroke-width='4' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpath d='M24 14v5M30 12v7M36 14v5' stroke='%23FAF7F2' stroke-width='3' stroke-linecap='round'/%3E%3C/svg%3E"
+    />
+
+    <title>Hangout-Hub — Student Campus Cafes & Group Hangout Guide</title>
+
+    <meta
+      name="description"
+      content="Discover aesthetic, budget-friendly cafes and group hangouts with real per-person bills, true squad seating, verified WiFi, and Instagram reel reality checks across Ahmedabad and campuses nationwide."
+    />
+
+    <meta
+      property="og:title"
+      content="Hangout-Hub — Student Campus Cafes & Group Hangout Guide"
+    />
+    <meta
+      property="og:description"
+      content="Discover aesthetic, budget-friendly cafes and group hangouts with real per-person bills, true squad seating, verified WiFi, and Instagram reel reality checks across Ahmedabad and campuses nationwide."
+    />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://hangout-hub.xo.je/" />
+
+    <link
+      rel="preload"
+      as="image"
+      href="/icons/icon-512.png"
+      fetchpriority="high"
+    />
+
+    <link rel="canonical" href="https://hangout-hub.xo.je/" />
+    <meta name="twitter:card" content="summary_large_image" />
+
+    <link rel="manifest" href="/manifest.webmanifest" />
+    <meta name="theme-color" content="#000000" />
+
+    <link rel="apple-touch-icon" href="/icons/icon-192.png" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+    <link
+      href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Preserve saved theme -->
+    <script>
+      (function () {
+        try {
+          var stored = localStorage.getItem("hangout_hub_night_mode");
+
+          if (stored === "true") {
+            document.documentElement.classList.add("dark");
+          } else {
+            document.documentElement.classList.remove("dark");
+          }
+        } catch (e) {}
+      })();
+    </script>
+
+    <!-- Detect installed PWA before the page renders -->
+    <script>
+      (function () {
+        try {
+          var standalone =
+            window.matchMedia("(display-mode: standalone)").matches ||
+            window.matchMedia("(display-mode: fullscreen)").matches ||
+            window.navigator.standalone === true;
+
+          if (standalone) {
+            document.documentElement.classList.add("standalone-app");
+          }
+        } catch (e) {}
+      })();
+    </script>
+
+    <!-- Startup splash styling -->
+    <style>
+      html,
+      body {
+        margin: 0;
+        min-height: 100%;
+      }
+
+      /* Standalone app background */
+      html.standalone-app,
+      html.standalone-app body {
+        background: #000 !important;
+      }
+
+      /* Keep website hidden behind splash */
+      html.standalone-app #root {
+        opacity: 0;
+        transition: opacity 0.55s ease;
+      }
+
+      /* Reveal website only after splash is removed */
+      html.standalone-app.app-visible #root {
+        opacity: 1;
+      }
+
+      /* Splash */
+      #startup-splash {
+        position: fixed;
+        inset: 0;
+        z-index: 999999;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        background: #000;
+        opacity: 1;
+      }
+
+      html.standalone-app #startup-splash {
+        display: flex;
+      }
+
+      /* Fade splash CONTENT, not the black background */
+      .splash-content,
+      .splash-bottom {
+        transition:
+          opacity 0.65s ease,
+          transform 0.65s ease;
+      }
+
+      html.standalone-app.splash-exit .splash-content {
+        opacity: 0;
+        transform: translateY(-8px);
+      }
+
+      html.standalone-app.splash-exit .splash-bottom {
+        opacity: 0;
+      }
+
+      /* Original design */
+      .splash-content {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        padding: 24px;
+      }
+
+      .splash-logo-wrap {
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 170px;
+        height: 170px;
+        margin-bottom: 28px;
+        animation: splashReveal 1.5s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+      }
+
+      .splash-glow {
+        position: absolute;
+        width: 145px;
+        height: 145px;
+        border-radius: 50%;
+        background: rgba(245, 158, 11, 0.13);
+        filter: blur(35px);
+        animation: glowPulse 3s ease-in-out infinite;
+      }
+
+      .splash-logo {
+        position: relative;
+        z-index: 1;
+        width: 125px;
+        height: 125px;
+        object-fit: contain;
+        filter: drop-shadow(0 0 18px rgba(245, 158, 11, 0.2));
+      }
+
+      .splash-title {
+        margin: 0;
+        color: #faf7f2;
+        font-family: "Outfit", sans-serif;
+        font-size: 30px;
+        font-weight: 800;
+        letter-spacing: 3px;
+        animation: textReveal 1.3s ease both;
+        animation-delay: 0.35s;
+      }
+
+      .splash-title span {
+        color: #f59e0b;
+      }
+
+      .splash-tagline {
+        margin: 12px 0 0;
+        color: #a8a29e;
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 12px;
+        letter-spacing: 1px;
+        animation: textReveal 1.3s ease both;
+        animation-delay: 0.55s;
+      }
+
+      .splash-loader {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 9px;
+        margin-top: 42px;
+      }
+
+      .splash-loader span {
+        width: 7px;
+        height: 7px;
+        border-radius: 50%;
+        background: #f59e0b;
+        animation: dotPulse 1.4s ease-in-out infinite;
+      }
+
+      .splash-loader span:nth-child(2) {
+        animation-delay: 0.2s;
+      }
+
+      .splash-loader span:nth-child(3) {
+        animation-delay: 0.4s;
+      }
+
+      .splash-bottom {
+        position: absolute;
+        bottom: 38px;
+        color: #57534e;
+        font-family: "Plus Jakarta Sans", sans-serif;
+        font-size: 9px;
+        font-weight: 700;
+        letter-spacing: 3px;
+        animation: textReveal 1.5s ease both;
+        animation-delay: 0.7s;
+      }
+
+      @keyframes splashReveal {
+        from {
+          opacity: 0;
+          transform: scale(0.82);
+        }
+        to {
+          opacity: 1;
+          transform: scale(1);
+        }
+      }
+
+      @keyframes textReveal {
+        from {
+          opacity: 0;
+          transform: translateY(12px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      @keyframes glowPulse {
+        0%,
+        100% {
+          opacity: 0.5;
+          transform: scale(0.9);
+        }
+        50% {
+          opacity: 1;
+          transform: scale(1.12);
+        }
+      }
+
+      @keyframes dotPulse {
+        0%,
+        60%,
+        100% {
+          opacity: 0.3;
+          transform: scale(0.75);
+        }
+        30% {
+          opacity: 1;
+          transform: scale(1.25);
+        }
+      }
+    </style>
+  </head>
+
+  <body
+    class="bg-[#FAF8F5] dark:bg-[#120E0B] text-stone-900 dark:text-stone-100 antialiased selection:bg-[#EBDDC9] selection:text-[#3D261A] dark:selection:bg-amber-900 dark:selection:text-amber-100 min-h-screen transition-colors duration-200"
+  >
+    <div id="startup-splash">
+      <div class="splash-content">
+        <div class="splash-logo-wrap">
+          <div class="splash-glow"></div>
+
+          <img
+            src="/icons/icon-512.png"
+            alt="Hangout Hub"
+            class="splash-logo"
+          />
+        </div>
+
+        <h1 class="splash-title">HANGOUT <span>HUB</span></h1>
+
+        <p class="splash-tagline">Your space. Your people. Your moments.</p>
+
+        <div class="splash-loader">
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+      </div>
+
+      <div class="splash-bottom">MADE FOR YOUR MOMENTS</div>
+    </div>
+
+    <div id="root"></div>
+
+    <script type="module" src="/src/main.tsx"></script>
+
+    <script>
+      if ("serviceWorker" in navigator) {
+        window.addEventListener("load", async () => {
+          try {
+            const registration = await navigator.serviceWorker.register(
+              "/sw.js",
+              { scope: "/" },
+            );
+
+            console.log("Service Worker registered:", registration);
+          } catch (error) {
+            console.error("Service Worker registration failed:", error);
+          }
+        });
+      }
+    </script>
+  </body>
+</html>
